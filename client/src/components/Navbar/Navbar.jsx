@@ -7,9 +7,11 @@ import Button from "@mui/material/Button";
 import SellerLogin from "../Seller/Forms/SellerLogin";
 import { useContext } from "react";
 import { DataContext } from "../utilities/ContextStore";
+import SellerSignup from "../Seller/Forms/SellerSignup";
+import {Link} from 'react-router-dom'
 
 export default function Navbar() {
-const {sellerLogin,setSellerLogin}=useContext(DataContext)
+const {sellerLogin,setSellerLogin,setSellerSignup,sellerSignup}=useContext(DataContext)
 
   return (
     <Box sx={{ flexGrow: 1, margin: "-8px" }}>
@@ -25,6 +27,7 @@ const {sellerLogin,setSellerLogin}=useContext(DataContext)
             Become a Seller
           </Typography>
           <Box>
+          <Link to="/sellerSignup">
             <Button
               sx={{
                 width: "150px",
@@ -33,9 +36,12 @@ const {sellerLogin,setSellerLogin}=useContext(DataContext)
                 backgroundColor: "yellow",
               }}
               variant="contained"
+              onClick={()=>setSellerSignup(true)}
             >
               Start Selling
             </Button>
+            </Link>
+        
             <Button
               sx={{
                 ml: 3,
