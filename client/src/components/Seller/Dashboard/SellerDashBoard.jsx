@@ -9,7 +9,7 @@ import CustomerReview from "./CustomerReview";
 export default function SellerDashBoard() {
   const SellerImg = styled("img")({
     height: "300px",
-    width: "855px",
+    width: "100%",
   });
 
   return (
@@ -51,7 +51,7 @@ export default function SellerDashBoard() {
               Start Selling
             </Button>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={7} >
             <SellerImg src={banner} />
           </Grid>
         </Grid>
