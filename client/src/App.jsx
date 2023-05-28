@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import './App.css'
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import SellerDashBoard from "./components/Seller/Dashboard/SellerDashBoard";
+import SellerSignup from "./components/Seller/Forms/SellerSignup";
+import ContextStore from "./components/utilities/ContextStore";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="bhenkelalas">
-      <h1>Hi ra <span>Bhenkelalas!!</span></h1>
-    </div>
-  )
+    <ContextStore>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SellerDashBoard />} />
+          <Route path="/sellerSignup" element={<SellerSignup />} />
+        </Routes>
+      </BrowserRouter>
+    </ContextStore>
+  );
 }
 
 export default App;
