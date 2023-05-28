@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import SellerLogin from "../Seller/Forms/SellerLogin";
 import { useContext } from "react";
 import { DataContext } from "../utilities/ContextStore";
-import SellerSignup from "../Seller/Forms/SellerSignup";
+import SellerSignup from "../Seller/Forms/SellerSignup1";
 import {Link} from 'react-router-dom'
 
 export default function Navbar() {
