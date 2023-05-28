@@ -22,14 +22,21 @@ useEffect(()=>{
     promise.then((res)=>{
         console.log(res)
         const currentUser=res.documents.filter((q)=>q.$id===uid)
-        console.log(currentUser)
-        setSellerSignupStatus( currentUser[0]?.seller_signup_status)
+        console.log(currentUser,"current")
+        if(uid)
+            setSellerSignupStatus(currentUser[0]?.seller_signup_status)
+        else
+            setSellerSignupStatus("1")
+        
+        
+
     })
 },[])
 
 console.log(sellerSignupData,"ee")
   return (
     <>
+    {sellerSignupStatus!=="4" &&
     <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
       <Process>
         <CheckCircleOutlineIcon /> <Typography> EMAIL ID & GST</Typography>
@@ -57,6 +64,7 @@ console.log(sellerSignupData,"ee")
         <CheckCircleOutlineIcon /> <Typography>ONBOARDING DASHBOARD</Typography>
       </Process>
     </Box>
+}
     {
         sellerSignupStatus==="1" && <SellerSignup1/> 
     }

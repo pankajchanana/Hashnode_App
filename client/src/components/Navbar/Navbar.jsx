@@ -11,7 +11,7 @@ import SellerSignup from "../Seller/Forms/SellerSignup1";
 import {Link} from 'react-router-dom'
 
 export default function Navbar() {
-const {sellerLogin,setSellerLogin,setSellerSignup,sellerSignup}=useContext(DataContext)
+const {sellerLogin,setSellerLogin,setSellerSignupStatus,sellerSignup}=useContext(DataContext)
 
   return (
     <Box sx={{ flexGrow: 1, margin: "-8px" }}>
@@ -27,7 +27,7 @@ const {sellerLogin,setSellerLogin,setSellerSignup,sellerSignup}=useContext(DataC
             Become a Seller
           </Typography>
           <Box>
-          <Link to="/sellerSignup">
+          <Link to="/seller-signup">
             <Button
               sx={{
                 width: "150px",
@@ -36,7 +36,7 @@ const {sellerLogin,setSellerLogin,setSellerSignup,sellerSignup}=useContext(DataC
                 backgroundColor: "yellow",
               }}
               variant="contained"
-              onClick={()=>setSellerSignup(true)}
+              onClick={()=>setSellerSignupStatus("1")}
             >
               Start Selling
             </Button>
