@@ -13,6 +13,9 @@ import { useContext } from "react";
 import { DataContext } from "../../utilities/ContextStore";
 import { v4 as uuidv4 } from "uuid";
 import { account, databases } from "../../../services/appwriteConfig";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Query } from "appwrite";
 
 export default function SellerSignup2() {
   const Process = styled(Box)({
@@ -25,18 +28,48 @@ export default function SellerSignup2() {
     sellerSignupData,
     setSellerSignupData,
   } = useContext(DataContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
+
+  useEffect(()=>{
+    const promises = databases.listDocuments(
+      "646f96a60d5767f59620",
+      "646f978d35a7eccbb93b",
+      [Query.limit(100), Query.offset(0)]
+    );
+    const uid = sessionStorage.getItem("uid");
+    promises.then((res) => {
+      const currentUser = res?.documents.filter((q) => q.$id === uid);
+      console.log(res.documents,currentUser,uid)
+      if (uid){
+        setSellerSignupData({
+          ...sellerSignupData,
+          email:currentUser[0]?.email,
+          gst_in:currentUser[0]?.gst_in,
+          mobile_number:currentUser[0]?.mobile_number
+        })
+      }
+    }).catch((e)=>{
+      console.log(e)
+    })
+  },[])
   const handleSellerSignup2 = (e) => {
-    e.preventDefault();
-    const uid=sessionStorage.getItem('uid')
+    // e.preventDefault();
+ 
     sellerSignupData.seller_signup_status="3";
+    const uid = sessionStorage.getItem("uid");
+    console.log(sellerSignupData,"sellerSignupData in sign2")
     const promise = databases.updateDocument("646f96a60d5767f59620","646f978d35a7eccbb93b",uid,sellerSignupData);
     promise.then((res)=>{
         setSellerSignupStatus("3")
     })
   }
-
   return (
+    <form onSubmit={handleSubmit(handleSellerSignup2)}>
     <Box
       sx={{
         display: "flex",
@@ -67,43 +100,81 @@ export default function SellerSignup2() {
         <TextField
           sx={{ width: "600px", mt: 4 }}
           placeholder="Create Password"
+          name="password"
+          {...register("password", {
+            required: {
+              value: true,
+              message: "Password is required",
+            },
+            minLength: {
+              value: 8,
+              message: "Password should be minimum 8 characters",
+            },
+          })}
           onChange={(e) => {
             setSellerSignupData({
               ...sellerSignupData,
-              password: e.target.value,
+              [e.target.name]: e.target.value,
             });
           }}
+          error={Boolean(errors.password)}
+          helperText={errors?.password?.message}
         ></TextField>
         <TextField
           sx={{ width: "600px", mt: 4 }}
           placeholder="Enter Your Full Name"
+          name="full_name"
+          {...register(
+            "full_name",
+           {
+            required: {
+              value: true,
+              message: "Full name is required",
+            }
+          }
+          )}
           onChange={(e) => {
             setSellerSignupData({
               ...sellerSignupData,
-              full_name: e.target.value,
+              [e.target.name]: e.target.value,
             });
           }}
+          error={Boolean(errors.full_name)}
+          helperText={errors?.full_name?.message}
         ></TextField>
         <TextField
           sx={{ width: "600px", mt: 4 }}
           placeholder="Enter Display Name"
+          name="display_name"
+          {...register(
+            "display_name",
+           {
+            required: {
+              value: true,
+              message: "Display name is required",
+            }
+          }
+          )}
           onChange={(e) => {
             setSellerSignupData({
               ...sellerSignupData,
-              display_name: e.target.value,
+              [e.target.name]: e.target.value,
             });
           }}
+          error={Boolean(errors.display_name)}
+          helperText={errors?.display_name?.message}
         ></TextField>
 
         <Button
           endIcon={<ArrowForwardIcon />}
           variant="contained"
-          onClick={handleSellerSignup2}
+          type="submit"
           sx={{ mt: 2, width: "300px" }}
         >
           Continue
         </Button>
       </Box>
     </Box>
+    </form>
   );
 }
