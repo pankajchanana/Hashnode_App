@@ -2,9 +2,9 @@ import { Navigate, Outlet, useLocation } from "react-router"
 
 
 export default function RequireAuth(){
-    const uid=sessionStorage.getItem("uid")
+    const secret=sessionStorage.getItem("secret_key")
     const location=useLocation();
     return (
-        uid ? <Outlet/> : <Navigate to ="/" state={{from:location}} replace/>
+        secret ? <Outlet/> : <Navigate to ="/" state={{from:location}} replace/>
     )
 }

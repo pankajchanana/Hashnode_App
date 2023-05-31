@@ -1,6 +1,5 @@
 import { Box, Divider, styled, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import { makeStyles } from "@mui/styles";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { DataContext } from "../../utilities/ContextStore";
 import SellerSignup1 from "./SellerSignup1";
@@ -16,8 +15,6 @@ export default function SellerSignup() {
   const {
     setSellerSignupStatus,
     sellerSignupStatus,
-    sellerSignupData,
-    setSellerSignupData,
   } = useContext(DataContext);
   const Process = styled(Box)({
     display: "flex",
@@ -37,8 +34,8 @@ export default function SellerSignup() {
 
   useEffect(() => {
     const promise = databases.listDocuments(
-      "646f96a60d5767f59620",
-      "646f978d35a7eccbb93b",
+      import.meta.env.VITE_DATABASE_ID,
+      import.meta.env.VITE_USERS_TABLE_ID,
       [
         Query.limit(100),
         Query.offset(0)

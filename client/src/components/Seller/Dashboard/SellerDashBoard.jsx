@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Navbar from "../../Navbar/Navbar";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import banner from "../../../../assets/banner_seller.png";
 import styled from "@emotion/styled";
 import CustomerReview from "./CustomerReview";
+import { useForm } from "react-hook-form";
+import { DataContext } from "../../utilities/ContextStore";
+import { Link } from "react-router-dom";
 
 export default function SellerDashBoard() {
   const SellerImg = styled("img")({
     height: "300px",
     width: "100%",
   });
+  const {
+    register,
+    formState: { errors },
+  } = useForm();
+  const {
+    sellerSignupData,
+    setSellerSignupData,
+  } = useContext(DataContext);
+
 
   return (
     <Box>
@@ -22,7 +34,7 @@ export default function SellerDashBoard() {
               display: "flex",
               flexDirection: "column",
               height: "300px",
-              padding: 9,
+              padding: 5,
               backgroundColor: "#01B5DB",
             }}
             item
@@ -32,11 +44,30 @@ export default function SellerDashBoard() {
               Launch your business in 10 minutes
             </Typography>
             <TextField
-              sx={{ backgroundColor: "white", borderRadius: 3, mt: 3 }}
+              sx={{ backgroundColor: "white", borderRadius: 3, mt: 6 }}
               id="outlined-basic"
               label="Enter 10 digit phone number here"
               variant="outlined"
+              name="mobile_number"
+            {...register("mobile_number", {
+              required: {
+                value: true,
+                message: "Mobile number is required",
+              },
+              minLength: {
+                value: 10,
+                message: "Mobile number should be 10 digits",
+              },
+            })}
+            error={Boolean(errors.mobile_number)}
+            onChange={(e) => {
+              setSellerSignupData({
+                ...sellerSignupData,
+                [e.target.name]: e.target.value,
+              });
+            }}
             />
+            <Link to="/seller-signup">
             <Button
               sx={{
                 mt: 2,
@@ -50,6 +81,7 @@ export default function SellerDashBoard() {
             >
               Start Selling
             </Button>
+            </Link>
           </Grid>
           <Grid item xs={7} >
             <SellerImg src={banner} />

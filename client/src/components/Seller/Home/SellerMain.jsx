@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { data, products } from "./data";
 
@@ -33,30 +33,58 @@ export default function SellerMain() {
           ))}
         </Box>
       </Box>
-      <Box sx={{ ml: 3 }}>
-        <Typography sx={{ textAlign: "center", fontSize: "30px" }}>
-          Products List
-        </Typography>
+      <Box sx={{ border: "1px solid grey", padding: 3,borderRadius:3 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            sx={{
+              fontSize: "20px",
+              borderBottom: "1px solid black",
+            }}
+          >
+            Last orders
+          </Typography>
+          <TextField size="small" label="Search.."></TextField>
+        </Box>
+        <Grid container sx={{display:"flex",justifyContent:"space-around",borderBottom: "1px solid grey"}}>
+          <Grid item xs={2}>
+          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Order id</Typography>
+          </Grid>
+          <Grid item xs={2}>
+          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Date</Typography>
+          </Grid>
+          <Grid item xs={3}>
+          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Customer</Typography>
+          </Grid>
+          <Grid item xs={2}>
+          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Status</Typography>
+          </Grid>
+          <Grid item xs={2}>
+          <Typography sx={{ mt: 2, mb: 2 ,fontWeight:600}}>Price</Typography>
+          </Grid>
+        </Grid>
         {products.map((product) => (
           <Grid
             container
             sx={{
-              m: 2,
               display: "flex",
               justifyContent: "space-around",
+              borderBottom: "1px solid black",
             }}
           >
-            <Grid item xs={1}>
-              <Typography>{product.id}</Typography>
+            <Grid item xs={2}>
+              <Typography sx={{ mt: 2, mb: 2 }}>{product.id}</Typography>
             </Grid>
-            <Grid item xs={9}>
-              <Typography>{product.title}</Typography>
+            <Grid item xs={2}>
+              <Typography sx={{ mt: 2, mb: 2 }}>Jan 8th,2023</Typography>
             </Grid>
-            <Grid item xs={1}>
-              <Typography>Open</Typography>
+            <Grid item xs={3}>
+              <Typography sx={{ mt: 2, mb: 2 }}>{product.title}</Typography>
             </Grid>
-            <Grid item xs={1}>
-              <Typography>{product.price}</Typography>
+            <Grid item xs={2}>
+              <Typography sx={{ mt: 2, mb: 2 }}>Open</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography sx={{ mt: 2, mb: 2 }}>{product.price}</Typography>
             </Grid>
           </Grid>
         ))}

@@ -1,26 +1,18 @@
-import {
-  Box,
-  Button,
-  Divider,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SignupInfo from "./SignupInfo";
 import { DataContext } from "../../utilities/ContextStore";
-import { account, databases } from "../../../services/appwriteConfig";
+import { databases } from "../../../services/appwriteConfig";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Query } from "appwrite";
 import { useRef } from "react";
-import { useEffect } from "react";
 
 export default function SellerSignup1() {
+  const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID } = import.meta.env;
   const {
-    sellerSignupStatus,
     setSellerSignupStatus,
     setSellerSignupData,
     sellerSignupData,
@@ -37,8 +29,8 @@ export default function SellerSignup1() {
   const handleSellerSignup1 = async (e) => {
     // e.preventDefault();
     const promises = databases.listDocuments(
-      "646f96a60d5767f59620",
-      "646f978d35a7eccbb93b",
+      VITE_DATABASE_ID,
+      VITE_USERS_TABLE_ID,
       [Query.limit(100), Query.offset(0)]
     );
     const email = sellerSignupData?.email;
@@ -56,11 +48,10 @@ export default function SellerSignup1() {
           sellerSignupData.seller_signup_status = "2";
           const uid = uuidv4();
           console.log("signup done");
-          console.log(sellerSignupData, "sellerSignupData in sign1");
           sessionStorage.setItem("uid", uid);
           const promise = databases.createDocument(
-            "646f96a60d5767f59620",
-            "646f978d35a7eccbb93b",
+            import.meta.env.VITE_DATABASE_ID,
+            import.meta.env.VITE_USERS_TABLE_ID,
             uid,
             sellerSignupData
           );
@@ -78,27 +69,6 @@ export default function SellerSignup1() {
       .catch((e) => {
         console.log(e, "error in signup3");
       });
-    // if (!userExistStatus && !uexits.current) {
-    //   // sellerSignupData.seller_signup_status = "2";
-    //   // const uid = uuidv4();
-    //   // console.log("signup done");
-    //   // sessionStorage.setItem("uid", uid);
-    //   // const promise = await databases.createDocument(
-    //   //   "646f96a60d5767f59620",
-    //   //   "646f978d35a7eccbb93b",
-    //   //   uid,
-    //   //   sellerSignupData
-    //   // );
-    //   // promise
-    //   //   .then((res) => {
-    //   //     setSellerSignupStatus("2");
-    //   //   })
-    //   //   .then((e) => {
-    //   //     console.log(e);
-    //   //   });
-    // } else {
-    //   setUserExistStatus(true);
-    // }
   };
 
   return (
@@ -124,6 +94,7 @@ export default function SellerSignup1() {
           <TextField
             sx={{ width: "600px", mt: 4 }}
             placeholder="Enter Mobile Number"
+            value={sellerSignupData.mobile_number}
             name="mobile_number"
             {...register("mobile_number", {
               required: {

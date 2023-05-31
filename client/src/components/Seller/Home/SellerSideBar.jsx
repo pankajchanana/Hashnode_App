@@ -6,23 +6,15 @@ import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { account } from "../../../services/appwriteConfig";
 import { useNavigate } from "react-router";
 
 export default function SellerSideBar() {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
 
-    const handleSellerLogout=()=>{
-
-        const uid=sessionStorage.getItem("uid");
-        // const promise=account.deleteSession(uid);
-        // promise.then((res)=>{
-        //     console.log(res,"account deleted")
-        //   })
-          sessionStorage.removeItem("uid")
-          navigate("/")
-
-    }
+  const handleSellerLogout = () => {
+    sessionStorage.removeItem("secret_key");
+    navigate("/");
+  };
   const ButtonStyle = styled(Button)({
     width: "200px",
     marginTop: "20px",
@@ -36,10 +28,11 @@ export default function SellerSideBar() {
         display: "flex",
         flexDirection: "column",
         backgroundColor: "grey",
-        height: "87vh",
+        height: "89vh",
         padding: 5,
         alignItems: "center",
-        position:"fixed"
+        position: "fixed",
+        margin:0
       }}
     >
       <Avatar sx={{ height: "100px", width: "100px" }} src={cust1} />
@@ -50,7 +43,12 @@ export default function SellerSideBar() {
         <ButtonStyle startIcon={<RateReviewIcon />}>Reviews</ButtonStyle>
         <ButtonStyle startIcon={<SettingsIcon />}>Settings</ButtonStyle>
       </Box>
-      <ButtonStyle onClick={handleSellerLogout} sx={{position:"absolute",bottom:0}}>Logout</ButtonStyle>
+      <ButtonStyle
+        onClick={handleSellerLogout}
+        sx={{ position: "absolute", bottom: 0 }}
+      >
+        Logout
+      </ButtonStyle>
     </Box>
   );
 }
