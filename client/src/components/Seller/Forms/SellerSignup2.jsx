@@ -1,109 +1,203 @@
-import {
-  Box,
-  Button,
-  Divider,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useContext } from "react";
 import { DataContext } from "../../utilities/ContextStore";
-import { v4 as uuidv4 } from "uuid";
 import { account, databases } from "../../../services/appwriteConfig";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Query } from "appwrite";
 
 export default function SellerSignup2() {
-  const Process = styled(Box)({
-    display: "flex",
-  });
-
+  const { setSellerSignupStatus, sellerSignupData, setSellerSignupData } =
+    useContext(DataContext);
   const {
-    sellerSignupStatus,
-    setSellerSignupStatus,
-    sellerSignupData,
-    setSellerSignupData,
-  } = useContext(DataContext);
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
+  useEffect(() => {
+    const promises = databases.listDocuments(
+      import.meta.env.VITE_DATABASE_ID,
+      import.meta.env.VITE_USERS_TABLE_ID,
+      [Query.limit(100), Query.offset(0)]
+    );
+    const uid = sessionStorage.getItem("uid");
+    promises
+      .then((res) => {
+        const currentUser = res?.documents.filter((q) => q.$id === uid);
+        console.log(res.documents, currentUser, uid);
+        if (uid) {
+          setSellerSignupData({
+            ...sellerSignupData,
+            email: currentUser[0]?.email,
+            gst_in: currentUser[0]?.gst_in,
+            mobile_number: currentUser[0]?.mobile_number,
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
   const handleSellerSignup2 = (e) => {
-    e.preventDefault();
-    const uid=sessionStorage.getItem('uid')
-    sellerSignupData.seller_signup_status="3";
-    const promise = databases.updateDocument("646f96a60d5767f59620","646f978d35a7eccbb93b",uid,sellerSignupData);
-    promise.then((res)=>{
-        setSellerSignupStatus("3")
-    })
-  }
+    // e.preventDefault();
 
+    sellerSignupData.seller_signup_status = "3";
+    const uid = sessionStorage.getItem("uid");
+    console.log(sellerSignupData, "sellerSignupData in sign2");
+    const promise = databases.updateDocument(
+      "646f96a60d5767f59620",
+      "646f978d35a7eccbb93b",
+      uid,
+      sellerSignupData
+    );
+    promise.then((res) => {
+      setSellerSignupStatus("3");
+    });
+
+    const user = account.create(
+      uid,
+      sellerSignupData.email,
+      sellerSignupData.password,
+      sellerSignupData.full_name
+    );
+    user
+      .then((res) => {
+        sellerSignupData.seller_signup_status = "3";
+        const promise = databases.updateDocument(
+          "646f96a60d5767f59620",
+          "646f978d35a7eccbb93b",
+          uid,
+          sellerSignupData
+        );
+        promise.then((res) => {
+          setSellerSignupStatus("3");
+          // navigate("/seller-home")
+        });
+        console.log(res, "account created");
+      })
+      .catch((e) => {
+        console.log("not created");
+        setSellerSignupStatus("3");
+      });
+
+    const promised = account.createEmailSession(
+      sellerSignupData.email,
+      sellerSignupData.password
+    );
+    promised.then(
+      function (response) {
+        console.log(response, "email session success"); // Success
+      },
+      function (error) {
+        console.log(error, "email session failed"); // Failure
+      }
+    );
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <form onSubmit={handleSubmit(handleSellerSignup2)}>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          mt: 8,
         }}
       >
-        <Typography sx={{ color: "#3D464D" }}>
-          We’ve sent a verification link to your email
-        </Typography>
-        <Typography>Almost there...</Typography>
-        <Typography sx={{ color: "#3D464D" }}>
-          We need these details to set up your account. You can also choose to
-          fill them in the next step.
-        </Typography>
-      </Box>
-      <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      >
-        <TextField
-          sx={{ width: "600px", mt: 4 }}
-          placeholder="Create Password"
-          onChange={(e) => {
-            setSellerSignupData({
-              ...sellerSignupData,
-              password: e.target.value,
-            });
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 8,
           }}
-        ></TextField>
-        <TextField
-          sx={{ width: "600px", mt: 4 }}
-          placeholder="Enter Your Full Name"
-          onChange={(e) => {
-            setSellerSignupData({
-              ...sellerSignupData,
-              full_name: e.target.value,
-            });
-          }}
-        ></TextField>
-        <TextField
-          sx={{ width: "600px", mt: 4 }}
-          placeholder="Enter Display Name"
-          onChange={(e) => {
-            setSellerSignupData({
-              ...sellerSignupData,
-              display_name: e.target.value,
-            });
-          }}
-        ></TextField>
-
-        <Button
-          endIcon={<ArrowForwardIcon />}
-          variant="contained"
-          onClick={handleSellerSignup2}
-          sx={{ mt: 2, width: "300px" }}
         >
-          Continue
-        </Button>
+          <Typography>Almost there...</Typography>
+          <Typography sx={{ color: "#3D464D" }}>
+            We need these details to set up your account. Please fill these
+            details
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            sx={{ width: "600px", mt: 4 }}
+            placeholder="Create Password"
+            name="password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Password is required",
+              },
+              minLength: {
+                value: 8,
+                message: "Password should be minimum 8 characters",
+              },
+            })}
+            onChange={(e) => {
+              setSellerSignupData({
+                ...sellerSignupData,
+                [e.target.name]: e.target.value,
+              });
+            }}
+            error={Boolean(errors.password)}
+            helperText={errors?.password?.message}
+          ></TextField>
+          <TextField
+            sx={{ width: "600px", mt: 4 }}
+            placeholder="Enter Your Full Name"
+            name="full_name"
+            {...register("full_name", {
+              required: {
+                value: true,
+                message: "Full name is required",
+              },
+            })}
+            onChange={(e) => {
+              setSellerSignupData({
+                ...sellerSignupData,
+                [e.target.name]: e.target.value,
+              });
+            }}
+            error={Boolean(errors.full_name)}
+            helperText={errors?.full_name?.message}
+          ></TextField>
+          <TextField
+            sx={{ width: "600px", mt: 4 }}
+            placeholder="Enter Display Name"
+            name="display_name"
+            {...register("display_name", {
+              required: {
+                value: true,
+                message: "Display name is required",
+              },
+            })}
+            onChange={(e) => {
+              setSellerSignupData({
+                ...sellerSignupData,
+                [e.target.name]: e.target.value,
+              });
+            }}
+            error={Boolean(errors.display_name)}
+            helperText={errors?.display_name?.message}
+          ></TextField>
+
+          <Button
+            endIcon={<ArrowForwardIcon />}
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2, width: "300px" }}
+          >
+            Continue
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </form>
   );
 }
