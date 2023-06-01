@@ -8,25 +8,21 @@ import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Query } from "appwrite";
-import { useRef } from "react";
 
 export default function SellerSignup1() {
   const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID } = import.meta.env;
-  const {
-    setSellerSignupStatus,
-    setSellerSignupData,
-    sellerSignupData,
-  } = useContext(DataContext);
+  const { setSellerSignupStatus, setSellerSignupData, sellerSignupData } =
+    useContext(DataContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const [userExistStatus, setUserExistStatus] = useState(false);
-  const uexits = useRef(userExistStatus);
 
-  const handleSellerSignup1 = async (e) => {
+  const [userExistStatus, setUserExistStatus] = useState(false);
+
+  const handleSellerSignup1 = (e) => {
     // e.preventDefault();
     const promises = databases.listDocuments(
       VITE_DATABASE_ID,
@@ -34,6 +30,7 @@ export default function SellerSignup1() {
       [Query.limit(100), Query.offset(0)]
     );
     const email = sellerSignupData?.email;
+    sellerSignupData.is_seller=true;
     promises
       .then((res) => {
         const users = res.documents;
@@ -42,7 +39,6 @@ export default function SellerSignup1() {
         if (user.length !== 0) {
           console.log("user exits");
           setUserExistStatus(true);
-          uexits.current = true;
         } else {
           console.log("user not exits");
           sellerSignupData.seller_signup_status = "2";
@@ -63,7 +59,6 @@ export default function SellerSignup1() {
               console.log(e);
             });
           setUserExistStatus(false);
-          uexits.current = false;
         }
       })
       .catch((e) => {

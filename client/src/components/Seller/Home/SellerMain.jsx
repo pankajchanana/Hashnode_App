@@ -1,8 +1,17 @@
+import styled from "@emotion/styled";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { listDefaultProducts } from "../../../redux/actions/productsAction";
 import { data, products } from "./data";
 
 export default function SellerMain() {
+  const RowItems = styled(Typography)({
+    marginBottom: 2,
+    marginTop: 8,
+  });
+
   return (
     <Box sx={{ mt: 5 }}>
       <Box>
@@ -23,6 +32,8 @@ export default function SellerMain() {
                 width: "150px",
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor: "rgb(211 159 159)", 
+                boxShadow: "5px 5px 5px rgba(68, 68, 68, 0.6)"
               }}
             >
               <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
@@ -33,7 +44,7 @@ export default function SellerMain() {
           ))}
         </Box>
       </Box>
-      <Box sx={{ border: "1px solid grey", padding: 3,borderRadius:3 }}>
+      <Box sx={{ border: "1px solid grey", padding: 3, borderRadius: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography
             sx={{
@@ -45,21 +56,28 @@ export default function SellerMain() {
           </Typography>
           <TextField size="small" label="Search.."></TextField>
         </Box>
-        <Grid container sx={{display:"flex",justifyContent:"space-around",borderBottom: "1px solid grey"}}>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            borderBottom: "1px solid grey",
+          }}
+        >
           <Grid item xs={2}>
-          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Order id</Typography>
+            <RowItems>Order id</RowItems>
           </Grid>
           <Grid item xs={2}>
-          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Date</Typography>
+            <RowItems>Date</RowItems>
           </Grid>
           <Grid item xs={3}>
-          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Customer</Typography>
+            <RowItems>Customer</RowItems>
           </Grid>
           <Grid item xs={2}>
-          <Typography sx={{ mt: 2, mb: 2,fontWeight:600 }}>Status</Typography>
+            <RowItems>Status</RowItems>
           </Grid>
           <Grid item xs={2}>
-          <Typography sx={{ mt: 2, mb: 2 ,fontWeight:600}}>Price</Typography>
+            <RowItems>Price</RowItems>
           </Grid>
         </Grid>
         {products.map((product) => (
@@ -72,19 +90,19 @@ export default function SellerMain() {
             }}
           >
             <Grid item xs={2}>
-              <Typography sx={{ mt: 2, mb: 2 }}>{product.id}</Typography>
+              <RowItems>{product.id}</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ mt: 2, mb: 2 }}>Jan 8th,2023</Typography>
+              <RowItems>Jan 8th,2023</RowItems>
             </Grid>
             <Grid item xs={3}>
-              <Typography sx={{ mt: 2, mb: 2 }}>{product.title}</Typography>
+              <RowItems>{product.title}</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ mt: 2, mb: 2 }}>Open</Typography>
+              <RowItems>Open</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <Typography sx={{ mt: 2, mb: 2 }}>{product.price}</Typography>
+              <RowItems>{product.price}</RowItems>
             </Grid>
           </Grid>
         ))}

@@ -14,7 +14,8 @@ const ContextStore = ({ children }) => {
     seller_signup_status:"1",
     password:"",
     full_name:"",
-    display_name:""
+    display_name:"",
+    is_seller:false,
   })
 
   return (

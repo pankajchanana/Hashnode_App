@@ -1,38 +1,32 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
-import { account } from "../../../services/appwriteConfig";
+import { useDispatch } from "react-redux";
+import { userAuth } from "../../../redux/actions/authentication";
 import SellerMain from "./SellerMain";
+import SellerProducts from "./SellerProducts";
 import SellerSideBar from "./SellerSideBar";
 
 export default function Home() {
+  const route = window.location.pathname.split("/").slice(-2)[0];
+  console.log(route);
+  const dispatch = useDispatch();
   useEffect(() => {
-    if (!!!sessionStorage.getItem("secret_key")) {
-      let urlSearchParams = new URLSearchParams(window.location.search);
-      console.log(window.location.pathname, "pathname");
-      console.log(urlSearchParams, "urlSearchParams");
-      let secret = urlSearchParams.get("secret");
-      let userId = urlSearchParams.get("userId");
-      sessionStorage.setItem("secret_key", secret);
-      account
-        .updateVerification(userId, secret)
-        .then((res) => {
-          console.log("complete email verification");
-          navigate("/seller-home");
-        })
-        .catch((er) => {
-          console.log("login failed");
-        });
-    }
+    dispatch(userAuth());
   }, []);
 
   return (
-    <Grid columnGap={18} container sx={{width:"100vw" ,margin:"-8px"}}>
-      <Grid item xs={2} >
+    <Grid
+      columnGap={18}
+      container
+      sx={{ backgroundColor: "aliceblue", width: "100vw", margin: "-8px" }}
+    >
+      <Grid item xs={2}>
         <SellerSideBar />
       </Grid>
-      <Grid item xs={8}>
-        <SellerMain />
+      <Grid sx={{ backgroundColor: "#cfcec4", borderRadius: 7 }} item xs={8}>
+        {(route === "dashboard" || route === "") && <SellerMain />}
+        {route === "products" && <SellerProducts />}
       </Grid>
     </Grid>
   );

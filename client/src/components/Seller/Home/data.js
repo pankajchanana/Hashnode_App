@@ -12,6 +12,11 @@ export const data=[{
     orders:200,
     name:"Orders",
     color:"#e84e40"
+},
+{
+    orders:"20,000/-",
+    name:"Total Income",
+    color:"#e84e40"
 }
 ]
 

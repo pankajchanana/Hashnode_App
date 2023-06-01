@@ -29,7 +29,7 @@ export default function SellerLogin() {
         console.log(response,response.userId, "email session success");
         setLoginError(false);
         sessionStorage.setItem("secret_key", response.userId);
-        navigate("/seller-home");
+        navigate(`/seller-home/dashboard/${response.userId}`);
       },
       function (error) {
         setLoginError(true);
