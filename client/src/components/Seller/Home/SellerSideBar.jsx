@@ -6,13 +6,14 @@ import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function SellerSideBar() {
   const navigate = useNavigate();
   const route = window.location.pathname.split("/").slice(-2)[0];
-  const uid=sessionStorage.getItem("secret_key")
+  const uid = sessionStorage.getItem("secret_key");
 
   const handleSellerLogout = () => {
     sessionStorage.removeItem("secret_key");
@@ -23,8 +24,12 @@ export default function SellerSideBar() {
     width: "200px",
     marginTop: "20px",
     fontSize: "20px",
-    color: "white",
+    color: state === route ? "white" : "black",
     backgroundColor: state === route && "#655f5f",
+    "&.MuiButtonBase-root:hover": {
+      backgroundColor:  "#655f5f",
+      color:"white"
+    }
   }));
 
   return (
@@ -32,7 +37,7 @@ export default function SellerSideBar() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "grey",
+        backgroundColor: "#FAFAFA",
         height: "89vh",
         padding: 5,
         alignItems: "center",
@@ -81,6 +86,8 @@ export default function SellerSideBar() {
         </ButtonStyle>
       </Box>
       <ButtonStyle
+      startIcon={<LogoutIcon/>}
+        state="logout"
         onClick={handleSellerLogout}
         sx={{ position: "absolute", bottom: 0 }}
       >

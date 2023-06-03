@@ -26,17 +26,17 @@ export default function SellerMain() {
                 flexDirection: "column",
                 m: 2,
                 p: 2,
-                border: "1px solid black",
+               
                 borderRadius: 3,
                 height: "100px",
                 width: "150px",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "rgb(211 159 159)", 
+                backgroundColor: "#F9F9F9", 
                 boxShadow: "5px 5px 5px rgba(68, 68, 68, 0.6)"
               }}
             >
-              <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
+              <Typography sx={{ fontSize: "25px", fontWeight: 600  }}>
                 {q.orders}
               </Typography>
               <Typography sx={{ fontSize: "20px" }}>{q.name}</Typography>
@@ -44,7 +44,7 @@ export default function SellerMain() {
           ))}
         </Box>
       </Box>
-      <Box sx={{ border: "1px solid grey", padding: 3, borderRadius: 3 }}>
+      <Box sx={{ backgroundColor: "#F9F9F9", boxShadow: "5px 5px 5px 5px rgba(68, 68, 68, 0.6)", padding: 3, borderRadius: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography
             sx={{

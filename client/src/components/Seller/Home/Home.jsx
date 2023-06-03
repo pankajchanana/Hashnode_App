@@ -19,12 +19,12 @@ export default function Home() {
     <Grid
       columnGap={18}
       container
-      sx={{ backgroundColor: "aliceblue", width: "100vw", margin: "-8px" }}
+      sx={{  width: "100vw", margin: "-8px" }}
     >
       <Grid item xs={2}>
         <SellerSideBar />
       </Grid>
-      <Grid sx={{ backgroundColor: "#cfcec4", borderRadius: 7 }} item xs={8}>
+      <Grid sx={{ borderRadius: 7 }} item xs={8}>
         {(route === "dashboard" || route === "") && <SellerMain />}
         {route === "products" && <SellerProducts />}
       </Grid>
