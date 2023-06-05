@@ -5,17 +5,17 @@ import SellerDashBoard from "./components/Seller/Dashboard/SellerDashBoard";
 import SellerSignup from "./components/Seller/Forms/SellerSignup";
 import Home from "./components/Seller/Home/Home";
 import SellerAddNewProduct from "./components/Seller/Home/SellerAddNewProduct";
-import SellerMain from "./components/Seller/Home/SellerMain";
-import SellerSideBar from "./components/Seller/Home/SellerSideBar";
 import ContextStore from "./components/utilities/ContextStore";
+import UserDashboard from "./components/User/Dashboard/UserDashboard";
 
 function App() {
   return (
     <ContextStore>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<UserDashboard />} />
           <Route element={<RedirectAuth />}>
-            <Route path="/" element={<SellerDashBoard />} />
+            <Route path="/seller" element={<SellerDashBoard />} />
             <Route path="/seller-signup" element={<SellerSignup />} />
           </Route>
           <Route element={<RequireAuth />}>
