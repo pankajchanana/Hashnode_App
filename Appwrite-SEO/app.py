@@ -44,17 +44,16 @@ def search():
     req=request.get_json()
     data=req["keyword"].lower()
     body = {
-            'query': {
-                'prefix': {
-                    'product_name': {
-                        'value': data,
-                        'boost': 1.0,
-                        'rewrite': 'constant_score',
-                        'case_insensitive': True
-                    }
+    'query': {
+        'wildcard': {
+            'product_name': {
+                'value': '*' + data + '*',
+                'boost': 1.0,
+                'case_insensitive': True
                 }
             }
         }
+    }
     response = es.search(index=index_name, body=body)
     hits = response['hits']['hits']
     products=[]
