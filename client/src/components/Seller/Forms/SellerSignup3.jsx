@@ -27,7 +27,8 @@ export default function SellerSignup3() {
       function (response) {
         setEmailSent(true);
         console.log(response, "email sent"); // Success
-        localStorage.setItem('secret_key',uid);
+        sessionStorage.setItem("token", response.userId);
+        localStorage.setItem("token",response.userId);
       },
       function (error) {
         setEmailSent(false);

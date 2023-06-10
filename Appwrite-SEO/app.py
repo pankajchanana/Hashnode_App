@@ -20,26 +20,32 @@ es = Elasticsearch(hosts=["http://localhost:9200"])
 
 ## THIS IS THE OCE TO CREATE INDEX IN THE ELASTC SEARCH AND LOAD THE DATA IN IT
 
-index_name = 'product_index'  # Choose a suitable index name
+index_name = 'product_index1'  # Choose a suitable index name
 
-# mapping = {
-#     'properties': {
-#         'product_id': {'type': 'integer'},
-#         'product_name': {'type': 'text'}
-#     }
-# }
+mapping = {
+    'properties': {
+        'product_id': {'type': 'integer'},
+        'product_name': {'type': 'text'}
+    }
+}
 
-# es.indices.create(index=index_name, ignore=400)
-# es.indices.put_mapping(index=index_name, body=mapping)
+es.indices.create(index=index_name, ignore=400)
+es.indices.put_mapping(index=index_name, body=mapping)
 
-# def index_product(product_id, product_name):
-#     document = {
-#         'product_id': product_id,
-#         'product_name': product_name
-#     }
-#     es.index(index=index_name, body=document, id=product_id)
+def index_product(product_id, product_name):
+    document = {
+        'product_id': product_id,
+        'product_name': product_name
+    }
+    es.index(index=index_name, body=document, id=product_id)
 
-@app.route('/search', methods=['POST'])
+
+
+# for i in range(len(products)):
+#     index_product(i,products[i]['product_name'])
+# index_product(1,'product_name')
+
+@app.route('/api/search', methods=['POST'])
 def search():
     req=request.get_json()
     data=req["keyword"].lower()

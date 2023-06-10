@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { listDefaultProducts } from "../../../redux/actions/productsAction";
@@ -11,6 +12,12 @@ export default function SellerMain() {
     marginBottom: 2,
     marginTop: 8,
   });
+  const [orderStatus,setOrderStatus]=useState()
+
+  const handleOrderStatusChange=(e)=>{
+    setOrderStatus(e.target.value)
+  }
+
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -26,17 +33,17 @@ export default function SellerMain() {
                 flexDirection: "column",
                 m: 2,
                 p: 2,
-               
+
                 borderRadius: 3,
                 height: "100px",
                 width: "150px",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#F9F9F9", 
-                boxShadow: "5px 5px 5px rgba(68, 68, 68, 0.6)"
+                backgroundColor: "#F9F9F9",
+                boxShadow: "5px 5px 5px rgba(68, 68, 68, 0.6)",
               }}
             >
-              <Typography sx={{ fontSize: "25px", fontWeight: 600  }}>
+              <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
                 {q.orders}
               </Typography>
               <Typography sx={{ fontSize: "20px" }}>{q.name}</Typography>
@@ -44,7 +51,14 @@ export default function SellerMain() {
           ))}
         </Box>
       </Box>
-      <Box sx={{ backgroundColor: "#F9F9F9", boxShadow: "5px 5px 5px 5px rgba(68, 68, 68, 0.6)", padding: 3, borderRadius: 3 }}>
+      <Box
+        sx={{
+          backgroundColor: "#F9F9F9",
+          boxShadow: "5px 5px 5px 5px rgba(68, 68, 68, 0.6)",
+          padding: 3,
+          borderRadius: 3,
+        }}
+      >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography
             sx={{
@@ -99,7 +113,27 @@ export default function SellerMain() {
               <RowItems>{product.title}</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>Open</RowItems>
+              <RowItems>
+              <Box sx={{ minWidth: 120 }}>
+
+                {" "}
+                <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Status"
+                  defaultValue="Ready to dispatch"
+                  onChange={handleOrderStatusChange}
+                >
+                  <MenuItem value={"Ready to dispatch"}>Ready to dispatch</MenuItem>
+                  <MenuItem value={"Shipping"}>Shipping</MenuItem>
+                  <MenuItem value={"Out for delivery"}>Out for delivery</MenuItem>
+                  <MenuItem value={"Delivered"}>Delivered</MenuItem>
+                </Select>
+                </FormControl>
+                </Box>
+              </RowItems>
             </Grid>
             <Grid item xs={2}>
               <RowItems>{product.price}</RowItems>

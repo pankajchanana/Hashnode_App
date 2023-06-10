@@ -13,12 +13,12 @@ import { Link } from "react-router-dom";
 export default function SellerSideBar() {
   const navigate = useNavigate();
   const route = window.location.pathname.split("/").slice(-2)[0];
-  const uid = sessionStorage.getItem("secret_key");
+  const uid = sessionStorage.getItem("token");
 
   const handleSellerLogout = () => {
-    sessionStorage.removeItem("secret_key");
-    localStorage.removeItem("secret_key");
-    navigate("/");
+    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
+    navigate("/seller");
   };
   const ButtonStyle = styled(Button)(({ state, route }) => ({
     width: "200px",
@@ -37,7 +37,7 @@ export default function SellerSideBar() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#FAFAFA",
+        backgroundColor: "#F1F4F5",
         height: "89vh",
         padding: 5,
         alignItems: "center",

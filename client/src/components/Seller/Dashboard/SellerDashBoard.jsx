@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import Box from "@mui/material/Box";
 import Navbar from "../../Navbar/Navbar";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import banner from "../../../../assets/banner_seller.png";
 import styled from "@emotion/styled";
 import CustomerReview from "./CustomerReview";
 import { useForm } from "react-hook-form";
 import { DataContext } from "../../utilities/ContextStore";
 import { Link } from "react-router-dom";
+import SellerNavbar from "../../Navbar/SellerNavbar";
 
 export default function SellerDashBoard() {
   const SellerImg = styled("img")({
@@ -26,7 +26,7 @@ export default function SellerDashBoard() {
 
   return (
     <Box>
-      <Navbar />
+      <SellerNavbar />
       <Box sx={{ marginTop: "8px" }}>
         <Grid container>
           <Grid
