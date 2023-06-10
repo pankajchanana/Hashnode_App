@@ -12,12 +12,12 @@ export const userAuth = createAsyncThunk("/auth", () => {
     console.log(urlSearchParams, "urlSearchParams");
     let secret = urlSearchParams.get("secret");
     let userId = urlSearchParams.get("userId");
-    sessionStorage.setItem("secret_key", secret);
+    // sessionStorage.setItem("token", secret);
     account
       .updateVerification(userId, secret)
       .then((res) => {
         console.log("complete email verification");
-        navigate("/seller-home/dashboard/");
+        navigate(`/seller-home/dashboard/`+userId);
       })
       .catch((er) => {
         console.log("login failed");

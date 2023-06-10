@@ -52,7 +52,7 @@ export const info=[
     "name":"24x7 Seller Support"
 },
 {
-    "img":"https://img1a.flixcart.com/fk-sp-static/images/Onboarding_logo_Mobile.svg",
+    "img":"https://img1a.flixcart.com/fk-sp-static/images/Onboarding_logo_Mobile.svgi",
     "desc":"Download our Flipkart Seller App to manage your business anywhere, anytime",
     "name":"Business on the go"
 },

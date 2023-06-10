@@ -28,7 +28,8 @@ export default function SellerLogin() {
       function (response) {
         console.log(response,response.userId, "email session success");
         setLoginError(false);
-        sessionStorage.setItem("secret_key", response.userId);
+        sessionStorage.setItem("token", response.userId);
+        localStorage.setItem("token", response.userId);
         navigate(`/seller-home/dashboard/${response.userId}`);
       },
       function (error) {

@@ -44,7 +44,7 @@ export default function SellerSignup1() {
           sellerSignupData.seller_signup_status = "2";
           const uid = uuidv4();
           console.log("signup done");
-          sessionStorage.setItem("uid", uid);
+     
           const promise = databases.createDocument(
             import.meta.env.VITE_DATABASE_ID,
             import.meta.env.VITE_USERS_TABLE_ID,

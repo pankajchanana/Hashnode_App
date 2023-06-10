@@ -6,12 +6,13 @@ import { DataContext } from "../../utilities/ContextStore";
 import { account, databases } from "../../../services/appwriteConfig";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import {v4 as uuidv4} from 'uuid'
 import { Query } from "appwrite";
 
 export default function SellerSignup2() {
   const { setSellerSignupStatus, sellerSignupData, setSellerSignupData } =
     useContext(DataContext);
-   const {VITE_DATABASE_ID,VITE_USERS_TABLE_ID}= import.meta.env
+  const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID } = import.meta.env;
   const {
     register,
     handleSubmit,
@@ -44,9 +45,8 @@ export default function SellerSignup2() {
   }, []);
   const handleSellerSignup2 = (e) => {
     // e.preventDefault();
-    sellerSignupData.seller_signup_status = "3";
-    const uid = sessionStorage.getItem("uid");
     console.log(sellerSignupData, "sellerSignupData in sign2");
+    const uid=uuidv4()
     const promise = databases.updateDocument(
       VITE_DATABASE_ID,
       VITE_USERS_TABLE_ID,
@@ -54,9 +54,8 @@ export default function SellerSignup2() {
       sellerSignupData
     );
     promise.then((res) => {
-      setSellerSignupStatus("3");
+      setSellerSignupStatus("2");
     });
-
     const user = account.create(
       uid,
       sellerSignupData.email,
@@ -66,9 +65,10 @@ export default function SellerSignup2() {
     user
       .then((res) => {
         sellerSignupData.seller_signup_status = "3";
+        setSellerSignupStatus("3");
         const promise = databases.updateDocument(
-          "646f96a60d5767f59620",
-          "646f978d35a7eccbb93b",
+          VITE_DATABASE_ID,
+          VITE_USERS_TABLE_ID,
           uid,
           sellerSignupData
         );
@@ -79,23 +79,8 @@ export default function SellerSignup2() {
       })
       .catch((e) => {
         console.log("not created");
-        setSellerSignupStatus("3");
+        setSellerSignupStatus("2");
       });
-
-    // const promised = account.createEmailSession(
-    //   sellerSignupData.email,
-    //   sellerSignupData.password
-    // );
-    // promised.then(
-    //   function (response) {
-    //     setSellerSignupStatus("3");
-    //     console.log(response, "email session success"); // Success
-    //   },
-    //   function (error) {
-    //     setSellerSignupStatus("3");
-    //     console.log(error, "email session failed"); // Failure
-    //   }
-    // );
   };
   return (
     <form onSubmit={handleSubmit(handleSellerSignup2)}>

@@ -6,21 +6,50 @@ import SellerSignup from "./components/Seller/Forms/SellerSignup";
 import Home from "./components/Seller/Home/Home";
 import SellerAddNewProduct from "./components/Seller/Home/SellerAddNewProduct";
 import ContextStore from "./components/utilities/ContextStore";
-import UserDashboard from "./components/User/Dashboard/UserDashboard";
+import Main from "./components/User/Dashboard/Main";
+import Navbar from "./components/Navbar/Navbar";
+import DetailProduct from "./components/User/Dashboard/Products/DetailProduct/DetailProduct";
+import CartPage from "./components/User/Dashboard/Products/DetailProduct/CartPage";
+import MainCartPage from "./components/User/Dashboard/Products/DetailProduct/MainCartPage";
+import { useDispatch } from "react-redux";
+import { listCurrentUserCartItems } from "./redux/actions/productsAction";
+import { useEffect } from "react";
 
 function App() {
+  const route = window.location.pathname;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listCurrentUserCartItems());
+  }, [route]);
   return (
     <ContextStore>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<UserDashboard />} />
+          <Route path="/" element={<Main />} />
+          <Route
+            path="/viewcart/:id"
+            element={
+              <>
+                <Navbar />
+                <MainCartPage />{" "}
+              </>
+            }
+          />
+          <Route path="/seller" element={<SellerDashBoard />} />
+          <Route
+            path="/products/:id"
+            element={
+              <>
+                <Navbar /> <DetailProduct />{" "}
+              </>
+            }
+          />
           <Route element={<RedirectAuth />}>
-            <Route path="/seller" element={<SellerDashBoard />} />
             <Route path="/seller-signup" element={<SellerSignup />} />
           </Route>
           <Route element={<RequireAuth />}>
-            <Route path="/seller-home/dashboard/:id" element={<Home />} />
             <Route path="/seller-home/products/:id" element={<Home />} />
+            <Route path="/seller-home/dashboard/*" element={<Home />} />
             <Route path="/new-product" element={<SellerAddNewProduct />} />
           </Route>
         </Routes>

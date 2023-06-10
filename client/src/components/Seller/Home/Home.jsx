@@ -10,16 +10,16 @@ import SellerSideBar from "./SellerSideBar";
 export default function Home() {
   const route = window.location.pathname.split("/").slice(-2)[0];
   console.log(route);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userAuth());
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(userAuth());
+  // }, []);
 
   return (
     <Grid
       columnGap={18}
       container
-      sx={{  width: "100vw", margin: "-8px" }}
+      sx={{  width: "100vw", margin: "-8px"  }}
     >
       <Grid item xs={2}>
         <SellerSideBar />
