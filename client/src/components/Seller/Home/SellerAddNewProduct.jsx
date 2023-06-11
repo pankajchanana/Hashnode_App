@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addNewSellerProduct } from "../../../redux/actions/productsAction";
 import { useNavigate } from "react-router";
-import bg from "/Users/cherit/Hashnode_App/client/assets/bg.jpeg";
+import bg from "../../../../assets/bg.jpeg";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../../services/appwriteConfig";
 

@@ -5,7 +5,7 @@ import { DataContext } from "../../utilities/ContextStore";
 import SellerSignup1 from "./SellerSignup1";
 import SellerSignup2 from "./SellerSignup2";
 import SellerSignup3 from "./SellerSignup3";
-import {Query} from 'appwrite';
+import { Query } from 'appwrite';
 import { useEffect } from "react";
 import {  databases } from "../../../services/appwriteConfig";
 
