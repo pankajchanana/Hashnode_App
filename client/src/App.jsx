@@ -12,8 +12,13 @@ import DetailProduct from "./components/User/Dashboard/Products/DetailProduct/De
 import CartPage from "./components/User/Dashboard/Products/DetailProduct/CartPage";
 import MainCartPage from "./components/User/Dashboard/Products/DetailProduct/MainCartPage";
 import { useDispatch } from "react-redux";
-import { listCurrentUserCartItems } from "./redux/actions/productsAction";
+import {
+  listCurrentUserCartItems,
+  listDefaultProducts,
+} from "./redux/actions/productsAction";
 import { useEffect } from "react";
+import Payment from "./components/Payment/Payment";
+import PaymentSuccess from "./components/Payment/PaymentSuccess";
 
 function App() {
   const route = window.location.pathname;
@@ -44,10 +49,11 @@ function App() {
               </>
             }
           />
-          <Route element={<RedirectAuth />}>
-            <Route path="/seller-signup" element={<SellerSignup />} />
-          </Route>
+          <Route path="/seller-signup" element={<SellerSignup />} />
+          <Route element={<RedirectAuth />}></Route>
           <Route element={<RequireAuth />}>
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/seller-home/products/:id" element={<Home />} />
             <Route path="/seller-home/dashboard/*" element={<Home />} />
             <Route path="/new-product" element={<SellerAddNewProduct />} />

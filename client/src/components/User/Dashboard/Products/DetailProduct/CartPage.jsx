@@ -10,7 +10,7 @@ import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import PriceDetails from "./PriceDetails";
-import { initialProducts } from "../../../constants/constants";
+// import { initialProducts } from "../../../constants/constants";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { DataContext } from "../../../../utilities/ContextStore";
@@ -21,9 +21,9 @@ import { addOrReduceCartItemsCount, removeItemFromCart } from "../../../../../re
 const { VITE_DATABASE_ID, VITE_CARTS_TABLE_ID } = import.meta.env;
 
 function CartPage({ item }) {
-  // const { initialProducts } = useSelector((state) => state.products);
+  const { initialProducts } = useSelector((state) => state.products);
   const { id } = useParams();
-  let product = initialProducts.find((q) => q.id === id);
+  // let product = initialProducts.find((q) => q.id === id);
   const dispatch=useDispatch()
   const { setItemCount, itemCount, setCartItemsData, cartItemsData } =
     useContext(DataContext);
@@ -41,24 +41,7 @@ function CartPage({ item }) {
     dispatch(removeItemFromCart(item.product_id))
   }
 
-  const handleProductPlaceOrder = () => {
-    // setCartItemsData({
-    //   ...cartItemsData,
-    //   product,
-    // });
-    // databases
-    //   .updateDocument(VITE_DATABASE_ID, VITE_CARTS_TABLE_ID, product.id, {
-    //     user_id: sessionStorage.getItem("secret_key"),
-    //     product_id: product.id,
-    //     product_count: itemCount,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-  };
+ 
 
   return (
     <Box
@@ -72,10 +55,10 @@ function CartPage({ item }) {
         backgroundColor: "white",
       }}
     >
-      <img style={{ height: 150, width: 150 }} src={item?.url} />
+      <img style={{ height: 150, width: 150 }} src={item?.product_img} />
       <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
         <Typography sx={{ ml: 5, fontSize: 18 }}>
-          {item?.title?.longTitle}
+          {item?.product_name}
         </Typography>
 
         <Typography sx={{ ml: 5, mt: 3, fontSize: 14, display: "flex" }}>
@@ -93,10 +76,10 @@ function CartPage({ item }) {
               textDecoration: "line-through",
             }}
           >
-            ₹{parseInt(item.product_count) * item?.price?.mrp}
+            ₹{parseInt(item?.product_count) * 2000}
           </Typography>
           <Typography sx={{ ml: 2, mt: 2, fontSize: 18, fontWeight: 600 }}>
-            ₹{parseInt(item.product_count) * item?.price?.cost}
+            ₹{parseInt(item?.product_count) * item?.product_price}
           </Typography>
           <Typography
             sx={{
@@ -107,7 +90,7 @@ function CartPage({ item }) {
               color: "green",
             }}
           >
-            ₹{item?.price?.discount}
+            ₹{"20%"}
           </Typography>
         </Box>
         <Typography
@@ -128,7 +111,7 @@ function CartPage({ item }) {
               onClick={(e) => handleProductCounttoCartItems(e, "remove")}
             />
             <input
-              value={item.product_count}
+              value={item?.product_count}
               style={{ width: "30px", textAlign: "center" }}
             ></input>
             <AddIcon

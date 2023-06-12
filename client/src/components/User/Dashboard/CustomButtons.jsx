@@ -15,7 +15,7 @@ import Login from "../Login/Login";
 import { DataContext } from "../../utilities/ContextStore";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { listCurrentUserCartItems } from "../../../redux/actions/productsAction";
+import { deleteUserCartItemsAndAddToOrdersItems, listCurrentUserCartItems } from "../../../redux/actions/productsAction";
 
 const Buttons = styled(Button)(
   ({ width, fontWeight, Color, backgroundColor, fontSize }) => ({
@@ -90,19 +90,29 @@ export default function CustomButtons() {
   const buttonRef = React.useRef(null);
   const moreButtonRef = React.useRef(null);
   const loggedInButtonRef = React.useRef(null);
-  const { setCartItem, setLoginModalOpen, loginModalOpen, itemCount } =
+  const { setLoginModalOpen, loginModalOpen, setLoginErrorMsg } =
     React.useContext(DataContext);
   const secretKey = sessionStorage.getItem("secret_key");
 
   const theme = useTheme();
 
-  const {cartItems }=useSelector(state=>state.products)
-  const navigate=useNavigate()
-  const dispatch=useDispatch()
+  const { cartItems } = useSelector((state) => state.products);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleUserLogout = () => {
     sessionStorage.removeItem("secret_key");
     dispatch(listCurrentUserCartItems());
-    navigate("/")
+    navigate("/");
+  };
+
+  const handleViewCart = () => {
+    if (secretKey) {
+      navigate("/viewcart/" + secretKey);
+      dispatch(listCurrentUserCartItems());
+    } else {
+      setLoginErrorMsg("Please Login to view Cart items");
+      setLoginModalOpen(true);
+    }
   };
 
   return (
@@ -117,7 +127,6 @@ export default function CustomButtons() {
           sx={{ zIndex: theme.zIndex.modal + 1 }}
           onMouseEnter={(e) => {
             setLoginOpen(e.currentTarget);
-            // return;
           }}
           onMouseLeave={() => setLoginOpen(false)}
           ref={buttonRef}
@@ -301,8 +310,7 @@ export default function CustomButtons() {
           Download App
         </MenuItem>
       </StyledMenu>
-      
-      <Link to={"/viewcart/"+secretKey}>
+
       <Buttons
         fontWeight={"800"}
         width={"150px"}
@@ -314,11 +322,10 @@ export default function CustomButtons() {
             <ShoppingCartIcon />{" "}
           </Badge>
         }
-        onClick={() => setCartItem(true)}
+        onClick={handleViewCart}
       >
         Cart
       </Buttons>
-      </Link>
     </ButtonWrapper>
   );
 }

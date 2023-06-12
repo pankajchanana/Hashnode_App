@@ -116,6 +116,7 @@ export default function SellerSignup2() {
             sx={{ width: "600px", mt: 4 }}
             placeholder="Create Password"
             name="password"
+            type="password"
             {...register("password", {
               required: {
                 value: true,

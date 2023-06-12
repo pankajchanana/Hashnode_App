@@ -1,24 +1,4 @@
-export const data=[{
-    orders:300,
-    name:"Total orders",
-    color:"#03a9f4"
-},
-{
-    orders:400,
-    name:"Add to bag",
-    color:"#8bc34a"
-},
-{
-    orders:200,
-    name:"Orders",
-    color:"#e84e40"
-},
-{
-    orders:"20,000/-",
-    name:"Total Income",
-    color:"#e84e40"
-}
-]
+
 
 export const products=[
 {"id":1,

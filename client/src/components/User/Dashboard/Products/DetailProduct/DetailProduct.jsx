@@ -6,13 +6,14 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 // import { getProductAction } from "../../redux/actions/getProductAction";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { initialProducts } from "../../../constants/constants";
+// import { initialProducts } from "../../../constants/constants";
 import { DataContext } from "../../../../utilities/ContextStore";
 import { v4 as uuid4 } from "uuid";
 import { Query } from "appwrite";
 import {
   checkIfProductAlreadyInCart,
   listCurrentUserCartItems,
+  listDefaultProducts,
 } from "../../../../../redux/actions/productsAction";
 
 const { VITE_DATABASE_ID, VITE_CARTS_TABLE_ID } = import.meta.env;
@@ -20,12 +21,9 @@ const { VITE_DATABASE_ID, VITE_CARTS_TABLE_ID } = import.meta.env;
 function DetailProduct() {
   const { id } = useParams();
   const secretKey = sessionStorage.getItem("secret_key");
-  let product = initialProducts.find((q) => q.id === id);
 
   const navigate = useNavigate();
   const {
-    setCartItem,
-    cartItem,
     setCartItemsData,
     cartItemsData,
     itemCount,
@@ -36,9 +34,12 @@ function DetailProduct() {
 
   useEffect(() => {
     dispatch(checkIfProductAlreadyInCart(id));
+    dispatch(listDefaultProducts());
   }, []);
-  const { itemPresentInCart } = useSelector((state) => state.products);
-
+  const { itemPresentInCart, initialProducts } = useSelector(
+    (state) => state.products
+  );
+  let product = initialProducts.find((q) => q.product_id === id);
   const ImageGrid = styled(Box)`
     margin: 30px 0 0 40px;
     display: flex;
@@ -46,6 +47,7 @@ function DetailProduct() {
 
   const Img = styled("img")`
     padding: 30px;
+    object-fit:contain;
   `;
 
   const ButtonWrapper = styled(Box)`
@@ -65,8 +67,6 @@ function DetailProduct() {
 
   const handleAddtoCartItems = async (e) => {
     if (!!secretKey && !itemPresentInCart) {
-      setCartItem(true);
-
       setCartItemsData({
         ...cartItemsData,
         product,
@@ -74,8 +74,11 @@ function DetailProduct() {
       await databases
         .createDocument(VITE_DATABASE_ID, VITE_CARTS_TABLE_ID, uuid4(), {
           user_id: sessionStorage.getItem("secret_key"),
-          product_id: product.id,
+          product_id: product.product_id,
           product_count: "1",
+          customer_name:"cherit",
+          product_price:product.product_price,
+          seller_id:product.seller_id
         })
         .then((res) => {
           navigate("/viewcart/" + secretKey);
@@ -96,7 +99,7 @@ function DetailProduct() {
   return (
     <ImageGrid>
       <Box>
-        <Img src={product?.detailUrl} />
+        <Img src={product?.product_img} />
         <ButtonWrapper>
           <Button
             startIcon={<ShoppingCartIcon />}
@@ -127,14 +130,14 @@ function DetailProduct() {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography sx={{ ml: 20, fontSize: 18 }}>
-          {product?.title?.longTitle}
+          {product?.product_name}
         </Typography>
         <Typography sx={{ ml: 20, mt: 2, color: "green" }}>
-          {product?.discount}
+          {/* {product?.discount} */}Extra 21% off
         </Typography>
         <PriceWrapper>
           <Typography sx={{ ml: 20, mt: 2, fontSize: 28, fontWeight: 600 }}>
-            ₹{product?.price?.cost}
+            ₹{product?.product_price}
           </Typography>
           <Typography
             sx={{
@@ -146,12 +149,12 @@ function DetailProduct() {
               textDecoration: "line-through",
             }}
           >
-            ₹{product?.price?.mrp}
+            {/* ₹{product?.price?.mrp} */}20,000
           </Typography>
           <Typography
             sx={{ ml: 2, mt: 2, fontSize: 16, fontWeight: 600, color: "green" }}
           >
-            ₹{product?.price?.discount}
+            {/* ₹{product?.price?.discount} */}20%
           </Typography>
         </PriceWrapper>
         <Typography sx={{ ml: 20, fontSize: 13 }}>

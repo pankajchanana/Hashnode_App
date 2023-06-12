@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { listDefaultProducts, sellerProductsList } from "../../../redux/actions/productsAction";
-import { data, products } from "./data";
 
 export default function SellerProducts() {
   const RowItems = styled(Typography)({

@@ -6,12 +6,12 @@ import Product from "./Products/Product";
 import Poster from "./Poster";
 import { DataContext } from "../../utilities/ContextStore";
 import NavBar from "../../Navbar/Navbar";
-import { listCurrentUserCartItems } from "../../../redux/actions/productsAction";
+import {
+  deleteUserCartItemsAndAddToOrdersItems,
+  listCurrentUserCartItems,
+  listDefaultProducts,
+} from "../../../redux/actions/productsAction";
 import { useDispatch, useSelector } from "react-redux";
-import { databases } from "../../../services/appwriteConfig";
-import {v4 as uuid4} from 'uuid'
-import { Query } from "appwrite";
-import {testProducts} from '../constants/constants'
 
 const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID, VITE_PRODUCTS_TABLE_ID } =
   import.meta.env;
@@ -21,7 +21,15 @@ const BannerWrapper = styled(Box)`
 `;
 
 export default function Main() {
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listDefaultProducts());
+    dispatch(listCurrentUserCartItems());
+    if(localStorage.getItem('payment_token')){
+      dispatch(deleteUserCartItemsAndAddToOrdersItems());
+      localStorage.removeItem('payment_token')
+    }
+  }, []);
   return (
     <div>
       <NavBar />

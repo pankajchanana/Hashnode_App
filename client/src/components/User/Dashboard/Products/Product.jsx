@@ -5,9 +5,10 @@ import ProductList from "./ProductList";
 import { useDispatch, useSelector } from "react-redux";
 // import { getProductAction } from "../../../redux/actions/getProductAction";
 import Carousel from "react-multi-carousel";
-import { initialProducts } from "../../constants/constants";
+// import { initialProducts } from "../../constants/constants";
+import { listDefaultProducts } from "../../../../redux/actions/productsAction";
 
-function Product({title}) {
+function Product({ title }) {
   const ProductWrapper = styled(Box)({
     display: "flex",
     flexDirection: "column",
@@ -20,7 +21,7 @@ function Product({title}) {
 
   const ProductListWrapper = styled(Box)({
     display: "flex",
-    overflow:"scroll" 
+    overflow: "scroll",
   });
   const responsive = {
     desktop: {
@@ -36,9 +37,8 @@ function Product({title}) {
       items: 5,
     },
   };
-
-  // const { initialProducts } = useSelector((state) => state.products);
- 
+  const dispatch = useDispatch();
+  const { initialProducts } = useSelector((state) => state.products);
   return (
     <ProductListWrapper>
       <ProductWrapper>

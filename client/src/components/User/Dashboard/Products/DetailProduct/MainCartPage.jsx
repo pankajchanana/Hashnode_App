@@ -1,56 +1,46 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listCurrentUserCartItems } from "../../../../../redux/actions/productsAction";
+import {
+  checkIfUserHasAddress,
+  listCurrentUserCartItems,
+  listDefaultProducts,
+} from "../../../../../redux/actions/productsAction";
+import { DataContext } from "../../../../utilities/ContextStore";
+import UserAddress from "../../UserAddress";
 import CartPage from "./CartPage";
 import PriceDetails from "./PriceDetails";
 
 export default function MainCartPage() {
-  const cartData = useSelector((state) => state.products.cartItems);
-  console.log(cartData, "cartdata");
-  // useEffect(() => {
-  //   fetch('https://dummyjson.com/products/categories')
-  //   .then(res => console.log(res.json()),"ewasjnwdas")
-  //   .then(console.log);
-  // }, [])
+  let { cartItems ,userAddress} = useSelector((state) => state.products);
+  const { openAdressModal, setOpenAdressModal } = useContext(DataContext);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listDefaultProducts());
+    dispatch(listCurrentUserCartItems());
+  }, []);
 
   const calculatePriceDetails = () => {
     let mrp = 0,
       cost = 0,
       count = 0;
-    if (cartData)
-      cartData.forEach((item) => {
-        console.log(item, "item");
+    if (cartItems !== undefined)
+      cartItems.forEach((item) => {
         count = parseInt(item?.product_count);
-        mrp += count * parseInt(item?.price?.mrp);
-        cost += count * parseInt(item?.price?.cost);
-        console.log(mrp, cost);
+        mrp += count * parseInt(item?.product_price);
+        cost += count * 2000;
       });
     return [mrp, cost, mrp - cost];
   };
 
   const handleProductPlaceOrder = () => {
-    // setCartItemsData({
-    //   ...cartItemsData,
-    //   product,
-    // });
-    // databases
-    //   .updateDocument(VITE_DATABASE_ID, VITE_CARTS_TABLE_ID, product.id, {
-    //     user_id: sessionStorage.getItem("secret_key"),
-    //     product_id: product.id,
-    //     product_count: itemCount,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    dispatch(checkIfUserHasAddress())
+    setOpenAdressModal(true);
   };
 
   return (
     <>
-      {cartData.length !== 0 ? (
+      {cartItems.length !== 0 ? (
         <Box
           sx={{
             display: "flex",
@@ -64,10 +54,11 @@ export default function MainCartPage() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              width: "80%",
             }}
           >
-            <Box sx={{ width: "90%" }}>
-              {cartData.map((item) => {
+            <Box sx={{ width: "100%" }}>
+              {cartItems.map((item) => {
                 return <CartPage item={item} />;
               })}
             </Box>
@@ -100,6 +91,8 @@ export default function MainCartPage() {
           No products in your cart
         </Typography>
       )}
+
+      {UserAddress && <UserAddress userAddress={userAddress}/>}
     </>
   );
 }

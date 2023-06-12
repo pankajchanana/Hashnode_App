@@ -1,24 +1,62 @@
 import styled from "@emotion/styled";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { listDefaultProducts } from "../../../redux/actions/productsAction";
-import { data, products } from "./data";
+import { useDispatch, useSelector } from "react-redux";
+import { listDefaultProducts, sellerLastOrderProductsList } from "../../../redux/actions/productsAction";
+import { DataContext } from "../../utilities/ContextStore";
+import {  products } from "./data";
 
 export default function SellerMain() {
   const RowItems = styled(Typography)({
     marginBottom: 2,
     marginTop: 8,
   });
-  const [orderStatus,setOrderStatus]=useState()
+  const dispatch = useDispatch();
 
-  const handleOrderStatusChange=(e)=>{
-    setOrderStatus(e.target.value)
-  }
+  useEffect(() => {
+    dispatch(sellerLastOrderProductsList());
+  }, []);
+  const [orderStatus, setOrderStatus] = useState();
 
+  const handleOrderStatusChange = (e) => {
+    setOrderStatus(e.target.value);
+  };
 
+  const { sellerLastOrderProducts } = useSelector((state)=>state.products);
+  console.log(sellerLastOrderProducts,"sellerLastOrderProducts");
+
+ const data=[{
+    orders:sellerLastOrderProducts.length,
+    name:"Total orders",
+    color:"#03a9f4"
+},
+{
+    orders:400,
+    name:"Add to bag",
+    color:"#8bc34a"
+},
+{
+    orders:200,
+    name:"Orders",
+    color:"#e84e40"
+},
+{
+    orders:"20,000/-",
+    name:"Total Income",
+    color:"#e84e40"
+}
+]
   return (
     <Box sx={{ mt: 5 }}>
       <Box>
@@ -33,7 +71,6 @@ export default function SellerMain() {
                 flexDirection: "column",
                 m: 2,
                 p: 2,
-
                 borderRadius: 3,
                 height: "100px",
                 width: "150px",
@@ -94,7 +131,7 @@ export default function SellerMain() {
             <RowItems>Price</RowItems>
           </Grid>
         </Grid>
-        {products.map((product) => (
+        {sellerLastOrderProducts.map((product) => (
           <Grid
             container
             sx={{
@@ -104,39 +141,44 @@ export default function SellerMain() {
             }}
           >
             <Grid item xs={2}>
-              <RowItems>{product.id}</RowItems>
+              <RowItems>{(product.order_id).substring(0,4)}</RowItems>
             </Grid>
             <Grid item xs={2}>
               <RowItems>Jan 8th,2023</RowItems>
             </Grid>
             <Grid item xs={3}>
-              <RowItems>{product.title}</RowItems>
+              <RowItems>{product.customer_name ? product.customer_name : "-"}</RowItems>
             </Grid>
             <Grid item xs={2}>
               <RowItems>
-              <Box sx={{ minWidth: 120 }}>
-
-                {" "}
-                <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Status"
-                  defaultValue="Ready to dispatch"
-                  onChange={handleOrderStatusChange}
-                >
-                  <MenuItem value={"Ready to dispatch"}>Ready to dispatch</MenuItem>
-                  <MenuItem value={"Shipping"}>Shipping</MenuItem>
-                  <MenuItem value={"Out for delivery"}>Out for delivery</MenuItem>
-                  <MenuItem value={"Delivered"}>Delivered</MenuItem>
-                </Select>
-                </FormControl>
+                <Box sx={{ minWidth: 120 }}>
+                  {" "}
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Status
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Status"
+                      defaultValue="Ready to dispatch"
+                      onChange={handleOrderStatusChange}
+                    >
+                      <MenuItem value={"Ready to dispatch"}>
+                        Ready to dispatch
+                      </MenuItem>
+                      <MenuItem value={"Shipping"}>Shipping</MenuItem>
+                      <MenuItem value={"Out for delivery"}>
+                        Out for delivery
+                      </MenuItem>
+                      <MenuItem value={"Delivered"}>Delivered</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Box>
               </RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>{product.price}</RowItems>
+              <RowItems>{product.product_price? product.product_price : "-"}</RowItems>
             </Grid>
           </Grid>
         ))}

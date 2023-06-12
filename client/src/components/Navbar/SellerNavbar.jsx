@@ -8,10 +8,11 @@ import SellerLogin from "../Seller/Forms/SellerLogin";
 import { useContext } from "react";
 import { DataContext } from "../utilities/ContextStore";
 import SellerSignup from "../Seller/Forms/SellerSignup1";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 export default function SellerNavbar() {
-const {sellerLogin,setSellerLogin,setSellerSignupStatus,sellerSignup}=useContext(DataContext)
+  const { sellerLogin, setSellerLogin, setSellerSignupStatus, sellerSignup } =
+    useContext(DataContext);
 
   return (
     <Box sx={{ flexGrow: 1, margin: "-8px" }}>
@@ -23,25 +24,32 @@ const {sellerLogin,setSellerLogin,setSellerSignupStatus,sellerSignup}=useContext
             justifyContent: "space-between",
           }}
         >
-          <Typography sx={{fontSize:"25px",fontWeight:600, color: "#0066CC", textAlign: "left" }}>
+          <Typography
+            sx={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#0066CC",
+              textAlign: "left",
+            }}
+          >
             Become a Seller
           </Typography>
           <Box>
-          <Link to="/seller-signup">
-            <Button
-              sx={{
-                width: "150px",
-                color: "black",
-                fontWeight: 600,
-                backgroundColor: "yellow",
-              }}
-              variant="contained"
-              onClick={()=>setSellerSignupStatus("1")}
-            >
-              Start Selling
-            </Button>
+            <Link to="/seller-signup">
+              <Button
+                sx={{
+                  width: "150px",
+                  color: "black",
+                  fontWeight: 600,
+                  backgroundColor: "yellow",
+                }}
+                variant="contained"
+                onClick={() => setSellerSignupStatus("1")}
+              >
+                Start Selling
+              </Button>
             </Link>
-        
+
             <Button
               sx={{
                 ml: 3,
@@ -50,7 +58,7 @@ const {sellerLogin,setSellerLogin,setSellerSignupStatus,sellerSignup}=useContext
                 fontWeight: 600,
                 backgroundColor: "#0066CC",
               }}
-              onClick={()=>setSellerLogin(true)}
+              onClick={() => setSellerLogin(true)}
               variant="contained"
             >
               Login
@@ -58,7 +66,7 @@ const {sellerLogin,setSellerLogin,setSellerSignupStatus,sellerSignup}=useContext
           </Box>
         </Toolbar>
       </AppBar>
-      {sellerLogin && <SellerLogin/>}
+      {sellerLogin && <SellerLogin />}
     </Box>
   );
 }

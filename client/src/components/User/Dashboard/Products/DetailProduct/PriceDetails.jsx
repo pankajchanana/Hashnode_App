@@ -1,10 +1,7 @@
 import { Box, Divider, styled, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import { DataContext } from "../../../../utilities/ContextStore";
 
 function PriceDetails({ details }) {
-  const { setItemCount, itemCount } = useContext(DataContext);
-
   const PriceWrapper = styled(Box)({
     display: "flex",
     justifyContent: "space-between",
@@ -64,12 +61,12 @@ function PriceDetails({ details }) {
       >
         <PriceWrapper>
           <Typography sx={{ fontSize: 16 }}>Price</Typography>
-          <Typography sx={{ fontSize: 16 }}>{ details[0]}</Typography>
+          <Typography sx={{ fontSize: 16 }}>{ details[1]}</Typography>
         </PriceWrapper>
         <DiscountWrapper>
           <Typography sx={{ fontSize: 16 }}>Discount</Typography>
           <Typography sx={{ fontSize: 16, color: "green" }}>
-            -{ details[2]}
+            { details[2]}
           </Typography>
         </DiscountWrapper>
         <DeliveryWrapper>
@@ -80,7 +77,7 @@ function PriceDetails({ details }) {
         <TotalAmountWrapper>
           <Typography sx={{ fontSize: 16 }}>Total Amount</Typography>
           <Typography sx={{ fontSize: 16 }}>
-            ₹{(details[0] - details[2])}
+            ₹{(details[0])}
           </Typography>
         </TotalAmountWrapper>
         <Divider sx={{ mt: 2 }} />

@@ -12,7 +12,16 @@ const middleware=[thunk];
 const store = configureStore({
   reducer: reducer,
   middleware: getDefaultMiddleware =>
-  getDefaultMiddleware()
+  getDefaultMiddleware({
+    serializableCheck: {
+      // Ignore these action types
+      ignoredActions: ['ITEM_SEARCHED'],
+      // Ignore these field paths in all actions
+      ignoredActionPaths: ['meta.arg', 'payload.time  stamp'],
+      // Ignore these paths in the state
+      ignoredPaths: ['items.dates'],
+    },
+  })
 
 });
 

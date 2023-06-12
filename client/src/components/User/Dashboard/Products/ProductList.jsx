@@ -6,8 +6,8 @@ function ProductList({ item }) {
   const Image = styled("img")({
     height: 200,
     width: 150,
+    objectFit:"contain"
   });
-
   return (
     <Box
       sx={{
@@ -20,15 +20,15 @@ function ProductList({ item }) {
         textAlign: "center",
       }}
     >
-      <Link style={{ textDecoration: "none" }} to={"/products/"+item.id}>
-        <Image src={item.url} />
+      <Link style={{ textDecoration: "none" }} to={"/products/"+item.product_id}>
+        <Image src={item.product_img} />
         <Typography sx={{ color: "black",fontWeight: 550, mb: 1 }}>
-          {item.title.shortTitle}
+          {item.product_name}
         </Typography>
         <Typography sx={{ color: "green", mb: 1 }}>
-          From ₹{item.price.cost}{" "}
+          From ₹{item.product_price}{" "}
         </Typography>
-        <Typography sx={{color: "black"}}>{item.brand} </Typography>
+        <Typography sx={{color: "black"}}>{item.product_brand} </Typography>
       </Link>
     </Box>
   );

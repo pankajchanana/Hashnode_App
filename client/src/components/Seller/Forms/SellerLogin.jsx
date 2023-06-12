@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../../redux/actions/productsAction";
 
 export default function SellerLogin() {
   const { sellerLogin, setSellerLogin, sellerSignupData, setSellerSignupData } =
@@ -19,18 +21,19 @@ export default function SellerLogin() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const hangleLogin = () => {
-    const promised =  account.createEmailSession(
+    const promised = account.createEmailSession(
       sellerSignupData.email,
       sellerSignupData.password
     );
     promised.then(
       function (response) {
-        console.log(response,response.userId, "email session success");
+        console.log(response, response.userId, "email session success");
         setLoginError(false);
-        sessionStorage.setItem("token", response.userId);
-        localStorage.setItem("token", response.userId);
-        navigate(`/seller-home/dashboard/${response.userId}`);
+        dispatch(setToken(sellerSignupData.email, true));
+        // sessionStorage.setItem("token", response.userId);
+        // localStorage.setItem("token", response.userId);
       },
       function (error) {
         setLoginError(true);
@@ -117,6 +120,7 @@ export default function SellerLogin() {
               sx={{ width: 400, mt: 3 }}
               placeholder="Enter Password"
               name="password"
+              type="password"
               {...register("password", {
                 required: {
                   value: true,
@@ -138,8 +142,15 @@ export default function SellerLogin() {
             ></TextField>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-           <Link to="seller-signup"> <Button>Register for new account</Button></Link>
-            <Button endIcon={<ArrowForwardIcon/>} variant="contained" onClick={hangleLogin}>
+            <Link to="seller-signup">
+              {" "}
+              <Button>Register for new account</Button>
+            </Link>
+            <Button
+              endIcon={<ArrowForwardIcon />}
+              variant="contained"
+              onClick={hangleLogin}
+            >
               Login
             </Button>
           </Box>
