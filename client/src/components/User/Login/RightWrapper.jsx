@@ -79,6 +79,15 @@ export default function RightWrapper({
     user
       .then((res) => {
         console.log(res, "account created");
+        const users = account.create(id, data.email, data.password, data.name);
+        users
+          .then((res) => {
+            console.log(res, "account created");
+          })
+          .catch((e) => {
+            console.log("not created");
+          });
+        setLoginModalOpen(false);
       })
       .catch((e) => {
         console.log(e, "not created");
