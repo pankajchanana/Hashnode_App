@@ -37,7 +37,6 @@ export default function RightWrapper({
   const dispatch = useDispatch();
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm();
   // const signUpData = useSelector((state) => state.user);

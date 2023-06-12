@@ -22,11 +22,11 @@ export default function UserAddress({ userAddress }) {
   };
 
   let [userAddressData, setUserAddressData] = useState({
-    address: userAddress.address,
-    zip_code: userAddress.zip_code,
-    land_mark: userAddress.land_mark,
-    house_no: userAddress.house_no,
-    mobile_number: userAddress.mobile_number ? userAddress.mobile_number.toString() :userAddress.mobile_number ,
+    address: userAddress?.address,
+    zip_code: userAddress?.zip_code,
+    land_mark: userAddress?.land_mark,
+    house_no: userAddress?.house_no,
+    mobile_number: userAddress?.mobile_number ? userAddress?.mobile_number.toString() :userAddress?.mobile_number ,
   });
 
   const handleSubmit = () => {
@@ -61,7 +61,7 @@ export default function UserAddress({ userAddress }) {
             margin="dense"
             placeholder="Address"
             fullWidth
-            value={userAddressData.address}
+            value={userAddressData?.address}
             name="address"
             onChange={(e) =>
               setUserAddressData({

@@ -13,7 +13,7 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listDefaultProducts, sellerLastOrderProductsList } from "../../../redux/actions/productsAction";
+import { productOrderStatusChange, sellerLastOrderProductsList } from "../../../redux/actions/productsAction";
 import { DataContext } from "../../utilities/ContextStore";
 import {  products } from "./data";
 
@@ -29,12 +29,12 @@ export default function SellerMain() {
   }, []);
   const [orderStatus, setOrderStatus] = useState();
 
-  const handleOrderStatusChange = (e) => {
+  const handleOrderStatusChange = (order_id) => (e) => {
+    dispatch(productOrderStatusChange(e.target.value, order_id));
     setOrderStatus(e.target.value);
   };
 
   const { sellerLastOrderProducts } = useSelector((state)=>state.products);
-  console.log(sellerLastOrderProducts,"sellerLastOrderProducts");
 
  const data=[{
     orders:sellerLastOrderProducts.length,
@@ -161,9 +161,13 @@ export default function SellerMain() {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       label="Status"
-                      defaultValue="Ready to dispatch"
-                      onChange={handleOrderStatusChange}
+                      defaultValue={product.order_status.toString()}
+                      value={orderStatus}
+                      onChange={handleOrderStatusChange(product.order_id)}
                     >
+                      <MenuItem value={"Order Placed"}>
+                        Order Placed
+                      </MenuItem>
                       <MenuItem value={"Ready to dispatch"}>
                         Ready to dispatch
                       </MenuItem>

@@ -381,3 +381,35 @@ export const checkIfUserHasAddress = () => (dispatch) => {
     console.log(e);
   }
 };
+
+export const productOrderStatusChange = (orderStatus, orderId) => {
+  const token = sessionStorage.getItem("secret_key")
+    ? sessionStorage.getItem("secret_key")
+    : localStorage.getItem("secret_key");
+  if (token) {
+    try {
+      databases
+        .listDocuments(VITE_DATABASE_ID, VITE_ORDERS_TABLE_ID, [
+          Query.equal("order_id", orderId),
+          Query.limit(100),
+          Query.offset(0),
+        ])
+        .then((res) => {
+          const order = res.documents[0];
+          databases
+            .updateDocument(VITE_DATABASE_ID, VITE_ORDERS_TABLE_ID, orderId, {order_status: orderStatus})
+            .then((res) => {
+              console.log(res, "status change successful");
+            })
+            .catch((e) => {
+              console.log("Status change failed", e);
+            })
+        })
+        .catch((e) => {
+          console.log("Order status change failed", e);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
