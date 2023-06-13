@@ -101,6 +101,7 @@ export default function CustomButtons() {
   const dispatch = useDispatch();
   const handleUserLogout = () => {
     sessionStorage.removeItem("secret_key");
+    localStorage.removeItem("secret_key");
     dispatch(listCurrentUserCartItems());
     navigate("/");
   };

@@ -16,14 +16,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { DataContext } from "../../../../utilities/ContextStore";
 import { databases } from "../../../../../services/appwriteConfig";
 import { v4 as uuid4 } from "uuid";
-import { addOrReduceCartItemsCount, removeItemFromCart } from "../../../../../redux/actions/productsAction";
+import { addOrReduceCartItemsCount, listCurrentUserCartItems, removeItemFromCart } from "../../../../../redux/actions/productsAction";
 
 const { VITE_DATABASE_ID, VITE_CARTS_TABLE_ID } = import.meta.env;
 
 function CartPage({ item }) {
-  const { initialProducts } = useSelector((state) => state.products);
-  const { id } = useParams();
-  // let product = initialProducts.find((q) => q.id === id);
   const dispatch=useDispatch()
   const { setItemCount, itemCount, setCartItemsData, cartItemsData } =
     useContext(DataContext);
@@ -34,7 +31,7 @@ function CartPage({ item }) {
     } else {
       countItem+=1;
     }
-    dispatch(addOrReduceCartItemsCount(item.product_id,countItem))
+    dispatch(addOrReduceCartItemsCount(item.product_id,countItem));
   };
 
   const handleRemoveItemFromCart=()=>{

@@ -23,10 +23,13 @@ export default function SellerMain() {
     marginTop: 8,
   });
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
-    dispatch(sellerLastOrderProductsList());
+    dispatch(listDefaultProducts()).then(() => {
+      dispatch(sellerLastOrderProductsList());
+    });
   }, []);
+  const { sellerLastOrderProducts } = useSelector((state)=>state.products);
   const [orderStatus, setOrderStatus] = useState();
 
   const handleOrderStatusChange = (order_id) => (e) => {
@@ -34,7 +37,6 @@ export default function SellerMain() {
     setOrderStatus(e.target.value);
   };
 
-  const { sellerLastOrderProducts } = useSelector((state)=>state.products);
 
  const data=[{
     orders:sellerLastOrderProducts.length,
@@ -57,6 +59,7 @@ export default function SellerMain() {
     color:"#e84e40"
 }
 ]
+console.log(sellerLastOrderProducts,"prouie")
   return (
     <Box sx={{ mt: 5 }}>
       <Box>
@@ -121,14 +124,20 @@ export default function SellerMain() {
           <Grid item xs={2}>
             <RowItems>Date</RowItems>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <RowItems>Customer</RowItems>
           </Grid>
           <Grid item xs={2}>
             <RowItems>Status</RowItems>
           </Grid>
           <Grid item xs={2}>
+            <RowItems>Product Name</RowItems>
+          </Grid>
+          <Grid item xs={1}>
             <RowItems>Price</RowItems>
+          </Grid>
+          <Grid item xs={1}>
+            <RowItems>Order quantity</RowItems>
           </Grid>
         </Grid>
         {sellerLastOrderProducts.map((product) => (
@@ -141,12 +150,12 @@ export default function SellerMain() {
             }}
           >
             <Grid item xs={2}>
-              <RowItems>{(product.order_id).substring(0,4)}</RowItems>
+              <RowItems>{(product.order_id)}</RowItems>
             </Grid>
             <Grid item xs={2}>
               <RowItems>Jan 8th,2023</RowItems>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <RowItems>{product.customer_name ? product.customer_name : "-"}</RowItems>
             </Grid>
             <Grid item xs={2}>
@@ -182,7 +191,13 @@ export default function SellerMain() {
               </RowItems>
             </Grid>
             <Grid item xs={2}>
+              <RowItems>{product.product_name? product.product_name : "-"}</RowItems>
+            </Grid>
+            <Grid item xs={1}>
               <RowItems>{product.product_price? product.product_price : "-"}</RowItems>
+            </Grid>
+            <Grid item xs={1}>
+              <RowItems>{product.product_count ? product.product_count : "-"}</RowItems>
             </Grid>
           </Grid>
         ))}

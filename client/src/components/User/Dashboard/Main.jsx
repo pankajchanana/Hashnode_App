@@ -12,6 +12,7 @@ import {
   listDefaultProducts,
 } from "../../../redux/actions/productsAction";
 import { useDispatch, useSelector } from "react-redux";
+import { databases } from "../../../services/appwriteConfig";
 
 const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID, VITE_PRODUCTS_TABLE_ID } =
   import.meta.env;
@@ -30,6 +31,8 @@ export default function Main() {
       localStorage.removeItem('payment_token')
     }
   }, []);
+
+
   return (
     <div>
       <NavBar />

@@ -67,23 +67,6 @@ export default function SellerSideBar() {
             Products
           </ButtonStyle>
         </Link>
-        <ButtonStyle route={route} state="customers" startIcon={<GroupIcon />}>
-          Customers
-        </ButtonStyle>
-        <ButtonStyle
-          route={route}
-          state="reviews"
-          startIcon={<RateReviewIcon />}
-        >
-          Reviews
-        </ButtonStyle>
-        <ButtonStyle
-          route={route}
-          state="settings"
-          startIcon={<SettingsIcon />}
-        >
-          Settings
-        </ButtonStyle>
       </Box>
       <ButtonStyle
       startIcon={<LogoutIcon/>}

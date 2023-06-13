@@ -3,7 +3,8 @@ import * as ActionTypes from "../constants/action-types";
 const initialState = {
   initialProducts: [],
   sellerProducts: [],
-  sellerLastOrderProducts:[],
+  sellerLastOrderProducts: [],
+  recommendedProducts: [],
   sellerSignupStatus: "1",
   userExistStatus: false,
   cartItems: [],
@@ -16,15 +17,29 @@ const initialState = {
 
 export const productReducer = (state = initialState, action) => {
   let itemId,
-    newCartItems = [];
+    newCartItems = [],
+    lastOrderItms = [];
+  let products;
   switch (action.type) {
     case ActionTypes.SET_INITIAL_SELLER_PRODUCTS:
       return { ...state, sellerProducts: action.payload };
-      case ActionTypes.SET_INITIAL_LAST_ORDERS_PRODUCTS:
-        return { ...state, sellerLastOrderProducts: action.payload };
-
     case ActionTypes.SET_INITIAL_USER_PRODUCTS:
       return { ...initialState, initialProducts: action.payload };
+
+    case ActionTypes.SET_INITIAL_LAST_ORDERS_PRODUCTS:
+      const products = [...state.initialProducts];
+      const lastOrderItms = [...action.payload];
+      const newCartItems = [];
+
+      products.forEach((p) => {
+        lastOrderItms.forEach((q) => {
+          if (p.product_id === q.product_id) {
+            const mergedItem = { ...p, ...q };
+            newCartItems.push(mergedItem);
+          }
+        });
+      });
+      return { ...state, sellerLastOrderProducts: newCartItems };
 
     case ActionTypes.SELLER_ALREADY_EXIST:
       return { ...initialState, userExistStatus: action.payload };
@@ -57,27 +72,34 @@ export const productReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.ITEM_ADDED:
-      itemId = action.payload.$id;
-      newCartItems = [...state.cartItems];
-      newCartItems.forEach((ite) => {
-        if (ite.product_id === itemId) {
-          ite.product_count = action.payload.product_count;
-          ite.product_name = action.payload.product_name;
-          ite.seller_id = action.payload.seller_id;
-          ite.product_id = itemId;
+      const itemId = action.payload.$id;
+      const updatedCartItems = state.cartItems.map((item) => {
+        if (item.product_id === itemId) {
+          return {
+            ...item,
+            product_count: action.payload.product_count,
+            product_name: action.payload.product_name,
+            seller_id: action.payload.seller_id,
+            product_id: itemId,
+          };
         }
+        return item;
       });
-      return { ...state, cartItems: newCartItems };
+
+      return {
+        ...state,
+        cartItems: updatedCartItems,
+      };
 
     case ActionTypes.ITEM_DELETED:
-      itemId = action.payload;
-      newCartItems = [...state.cartItems];
-      newCartItems.forEach((ite, index) => {
-        if (ite.product_id === itemId) {
-          newCartItems.splice(index, 1);
+      let itemIds = action.payload;
+      let newCartItemsArr = [...state.cartItems];
+      newCartItemsArr.forEach((ite, index) => {
+        if (ite.product_id === itemIds) {
+          newCartItemsArr.splice(index, 1);
         }
       });
-      return { ...state, cartItems: newCartItems };
+      return { ...state, cartItems: newCartItemsArr };
     case ActionTypes.ITEM_SEARCHED:
       return { ...state, userSearchData: action.payload.data };
 
@@ -85,6 +107,20 @@ export const productReducer = (state = initialState, action) => {
       return { ...state, searchedProduct: action.payload };
     case ActionTypes.USER_ADDRESS_STATUS:
       return { ...state, userAddress: action.payload };
+
+    case ActionTypes.USER_RECOMMENDED_PRODUCTS:
+      let recommendedProduct = eval(action.payload);
+      let newRecommendedProducts = [];
+      let newProducts = [...state.initialProducts];
+      console.log(newProducts, "newProducts");
+      newProducts.map((q) => {
+        recommendedProduct.map((item) => {
+          if (item.product_id === q.product_id) {
+            newRecommendedProducts.push(q);
+          }
+        });
+      });
+      return { ...state, recommendedProducts: newRecommendedProducts };
 
     default:
       return state;

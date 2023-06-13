@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,24 +10,39 @@ import {
 import { useContext } from "react";
 import { DataContext } from "../../utilities/ContextStore";
 import { setUserAddressInfo } from "../../../redux/actions/productsAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { InputLabel } from "@mui/material";
 
-export default function UserAddress({ userAddress }) {
+export default function UserAddress() {
   const { openAdressModal, setOpenAdressModal, setData, data } =
     useContext(DataContext);
   const dispatch = useDispatch();
   const handleClose = () => {
     setOpenAdressModal(false);
   };
+  const { userAddress } = useSelector((state) => state.products);
 
-  let [userAddressData, setUserAddressData] = useState({
-    address: userAddress?.address,
-    zip_code: userAddress?.zip_code,
-    land_mark: userAddress?.land_mark,
-    house_no: userAddress?.house_no,
-    mobile_number: userAddress?.mobile_number ? userAddress?.mobile_number.toString() :userAddress?.mobile_number ,
+  const [userAddressData, setUserAddressData] = useState({
+    address: "",
+  zip_code: "",
+  land_mark: "",
+  house_no: "",
+  mobile_number: "",
   });
+
+  useEffect(() => {
+    if (userAddress) {
+      setUserAddressData({
+        address: userAddress?.address || "",
+        zip_code: userAddress?.zip_code || "",
+        land_mark: userAddress?.land_mark || "",
+        house_no: userAddress?.house_no || "",
+        mobile_number: userAddress?.mobile_number
+          ? userAddress?.mobile_number.toString()
+          : "",
+      });
+    }
+  }, [userAddress]);
 
   const handleSubmit = () => {
     dispatch(setUserAddressInfo(userAddressData));

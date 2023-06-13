@@ -22,6 +22,10 @@ import {
 import Radio from "@mui/material/Radio";
 import { useForm } from "react-hook-form";
 import { v4 as uuid4 } from "uuid";
+import { Query } from "appwrite";
+import { getSecretKey } from "../../utilities/helper";
+
+const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID } = import.meta.env;
 
 export default function RightWrapper({
   setLoginText,
@@ -62,8 +66,8 @@ export default function RightWrapper({
     console.log(data);
     const id = uuid4();
     const user = databases.createDocument(
-      import.meta.env.VITE_DATABASE_ID,
-      import.meta.env.VITE_USERS_TABLE_ID,
+      VITE_DATABASE_ID,
+      VITE_USERS_TABLE_ID,
       id,
       {
         name: data.name,
@@ -71,7 +75,7 @@ export default function RightWrapper({
         password: data.password,
         gender: data.gender,
         mobile_number: data.mobile_number,
-        is_seller: data.is_seller,
+        is_seller: false,
         user_id: id,
       }
     );
@@ -94,22 +98,33 @@ export default function RightWrapper({
   };
 
   const handleUserLogin = async () => {
-    console.log(data, "data in login");
-    await account
-      .createEmailSession(data.email, data.password)
-      .then((response) => {
-        console.log(response, response.userId, "email session success");
-        setUserLoginError(false);
-        setLoginErrorMsg("");
-        sessionStorage.setItem("secret_key", response.userId);
-        setLoginModalOpen(false);
-        navigate(`/`);
-        dispatch(setToken(data.email, false));
-        dispatch(listCurrentUserCartItems());
-      })
-      .catch((error) => {
-        setUserLoginError(true);
-        console.log(error, "email session failed");
+    databases
+      .listDocuments(VITE_DATABASE_ID, VITE_USERS_TABLE_ID, [
+        Query.equal("is_seller", false),
+      ])
+      .then(async (res) => {
+        const users = res.documents;
+        const userExist = users.filter((q) => q.email === data.email);
+        if (userExist.length!==0) {
+          await account
+            .createEmailSession(data.email, data.password)
+            .then((response) => {
+              console.log(response, response.userId, "email session success");
+              setUserLoginError(false);
+              setLoginErrorMsg("");
+              sessionStorage.setItem("secret_key", response.userId);
+              setLoginModalOpen(false);
+              navigate(`/`);
+              dispatch(setToken(data.email, false));
+              dispatch(listCurrentUserCartItems());
+            })
+            .catch((error) => {
+              setUserLoginError(true);
+              console.log(error, "email session failed");
+            });
+        } else {
+          setLoginErrorMsg("This is a Seller account ,Please login there");
+        }
       });
   };
   return (

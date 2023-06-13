@@ -14,23 +14,18 @@ const {
 } = import.meta.env;
 
 //user initial products to display
-export const listDefaultProducts = () => (dispatch) => {
+export const listDefaultProducts = () => async (dispatch) => {
   try {
-    databases
-      .listDocuments(VITE_DATABASE_ID, VITE_PRODUCTS_TABLE_ID, [
-        Query.limit(100),
-        Query.offset(0),
-      ])
-      .then((res) => {
-        dispatch({
-          type: ActionTypes.SET_INITIAL_USER_PRODUCTS,
-          payload: res.documents,
-        });
-        // console.log(res, "initial prodcuts");
-      })
-      .catch((e) => {
-        console.log("initial products failed", e);
-      });
+    const res = await databases.listDocuments(
+      VITE_DATABASE_ID,
+      VITE_PRODUCTS_TABLE_ID,
+      [Query.limit(100), Query.offset(0)]
+    );
+
+    dispatch({
+      type: ActionTypes.SET_INITIAL_USER_PRODUCTS,
+      payload: res.documents || [],
+    });
   } catch (e) {
     console.log(e);
   }
@@ -65,26 +60,19 @@ export const sellerProductsList = () => (dispatch) => {
 
 //seller last order products
 
-export const sellerLastOrderProductsList = () => (dispatch) => {
+export const sellerLastOrderProductsList = () => async (dispatch) => {
   const uid = sessionStorage.getItem("token");
   if (uid) {
     try {
-      databases
-        .listDocuments(VITE_DATABASE_ID, VITE_ORDERS_TABLE_ID, [
-          Query.equal("seller_id", uid),
-          Query.limit(100),
-          Query.offset(0),
-        ])
-        .then((res) => {
-          dispatch({
-            type: ActionTypes.SET_INITIAL_LAST_ORDERS_PRODUCTS,
-            payload: res.documents,
-          });
-          // console.log(res, "initial prodcuts");
-        })
-        .catch((e) => {
-          console.log("initial products failed", e);
-        });
+      const res = await databases.listDocuments(
+        VITE_DATABASE_ID,
+        VITE_ORDERS_TABLE_ID,
+        [Query.equal("seller_id", uid), Query.limit(100), Query.offset(0)]
+      );
+      dispatch({
+        type: ActionTypes.SET_INITIAL_LAST_ORDERS_PRODUCTS,
+        payload: res.documents,
+      });
     } catch (e) {
       console.log(e);
     }
@@ -230,7 +218,7 @@ export const removeItemFromCart = (productId) => (dispatch) => {
 export const searchUserInputData = (data) => async (dispatch) => {
   try {
     await axios
-      .post("http://localhost:3000/api/search", {
+      .post("/search", {
         keyword: data,
       })
       .then((res) => {
@@ -301,8 +289,9 @@ export const deleteUserCartItemsAndAddToOrdersItems = () => (dispatch) => {
                 seller_id: i.seller_id,
                 product_id: i.product_id,
                 order_id: uid,
-                customer_name:i.customer_name,
-                product_price:i.product_price
+                customer_name: i.customer_name,
+                product_price: i.product_price,
+                product_count: i.product_count,
               })
               .then((res) => {
                 console.log(res);
@@ -341,7 +330,7 @@ export const setToken = (data, isSeller) => (dispatch) => {
         if (isSeller) {
           sessionStorage.setItem("token", res.documents[0].$id);
           localStorage.setItem("token", res.documents[0].$id);
-          window.location.href=`/seller-home/dashboard/${res.documents[0].$id}`;
+          window.location.href = `/seller-home/dashboard/${res.documents[0].$id}`;
         } else {
           sessionStorage.setItem("secret_key", res.documents[0].$id);
           localStorage.setItem("secret_key", res.documents[0].$id);
@@ -411,5 +400,26 @@ export const productOrderStatusChange = (orderStatus, orderId) => {
     } catch (e) {
       console.log(e);
     }
+  }
+};
+//fetch recommended products
+
+export const fetchRecommendedProducts = (data) => async (dispatch) => {
+  try {
+    await axios
+      .post("/recommend", {
+        product_name: "iphone 9",
+      })
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.USER_RECOMMENDED_PRODUCTS,
+          payload: res.data["recommended list"],
+        });
+      })
+      .catch((e) => {
+        console.log(e, "error while recommended");
+      });
+  } catch (e) {
+    console.log(e);
   }
 };

@@ -17,6 +17,8 @@ export default function SellerAddNewProduct() {
     product_price: "",
     product_quantity: "",
     product_img: "",
+    product_category: "",
+    product_brand: "",
   });
   const {
     register,
@@ -147,7 +149,63 @@ export default function SellerAddNewProduct() {
               justifyContent: "space-evenly",
             }}
           >
-            <Typography sx={{ mt: 4 }}>Product Name</Typography>
+            <Typography sx={{ mt: 4 }}>Product Category</Typography>
+            <TextField
+              sx={{ width: "600px", mt: 4 }}
+              placeholder="Enter Product category"
+              name="product_category"
+              {...register("product_category", {
+                required: {
+                  value: true,
+                  message: "Product category is required",
+                },
+              })}
+              onChange={(e) => {
+                setNewProductDetails({
+                  ...newProductDetails,
+                  [e.target.name]: e.target.value,
+                });
+              }}
+              error={Boolean(errors.product_category)}
+              helperText={errors?.product_category?.message}
+            ></TextField>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Typography sx={{ mt: 4 }}>Product Brand</Typography>
+            <TextField
+              sx={{ width: "600px", mt: 4 }}
+              placeholder="Enter Product brand"
+              name="product_brand"
+              {...register("product_brand", {
+                required: {
+                  value: true,
+                  message: "Product brand is required",
+                },
+              })}
+              onChange={(e) => {
+                setNewProductDetails({
+                  ...newProductDetails,
+                  [e.target.name]: e.target.value,
+                });
+              }}
+              error={Boolean(errors.product_brand)}
+              helperText={errors?.product_brand?.message}
+            ></TextField>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Typography sx={{ mt: 4 }}>Product Price</Typography>
             <TextField
               sx={{ width: "600px", mt: 4 }}
               placeholder="Enter Product Price"

@@ -27,6 +27,8 @@ function App() {
     dispatch(listCurrentUserCartItems());
   }, [route]);
   return (
+    <>
+   
     <ContextStore>
       <BrowserRouter>
         <Routes>
@@ -50,6 +52,7 @@ function App() {
             }
           />
           <Route path="/seller-signup" element={<SellerSignup />} />
+          <Route path="/seller-home/dashboard/*" element={<Home />} />
           <Route element={<RedirectAuth />}></Route>
           <Route element={<RequireAuth />}>
             <Route path="/payment" element={<Payment />} />
@@ -61,6 +64,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </ContextStore>
+    </>
   );
 }
 

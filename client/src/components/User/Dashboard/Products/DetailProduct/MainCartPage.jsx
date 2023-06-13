@@ -92,7 +92,7 @@ export default function MainCartPage() {
         </Typography>
       )}
 
-      {UserAddress && <UserAddress userAddress={userAddress}/>}
+      {UserAddress && <UserAddress />}
     </>
   );
 }
