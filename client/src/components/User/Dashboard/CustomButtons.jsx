@@ -15,8 +15,11 @@ import Login from "../Login/Login";
 import { DataContext } from "../../utilities/ContextStore";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserCartItemsAndAddToOrdersItems, listCurrentUserCartItems } from "../../../redux/actions/productsAction";
+import { listCurrentUserCartItems } from "../../../redux/actions/productsAction";
+import { useEffect, useState } from "react";
+import { databases } from "../../../services/appwriteConfig";
 
+const { VITE_DATABASE_ID, VITE_USERS_TABLE_ID } = import.meta.env;
 const Buttons = styled(Button)(
   ({ width, fontWeight, Color, backgroundColor, fontSize }) => ({
     backgroundColor: backgroundColor ? backgroundColor : "inherit",
@@ -85,6 +88,7 @@ const StyledMenu = styled((props) => (
 export default function CustomButtons() {
   const [loginOpen, setLoginOpen] = React.useState(null);
   const [open, setOpen] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [userOptionsOpen, setUserOptionsOpen] = React.useState(null);
   const [menuShowingDropdown, setMenuShowingDropdown] = React.useState("");
   const buttonRef = React.useRef(null);
@@ -105,7 +109,6 @@ export default function CustomButtons() {
     dispatch(listCurrentUserCartItems());
     navigate("/");
   };
-
   const handleViewCart = () => {
     if (secretKey) {
       navigate("/viewcart/" + secretKey);
@@ -115,7 +118,15 @@ export default function CustomButtons() {
       setLoginModalOpen(true);
     }
   };
-
+  useEffect(() => {
+    (async () => {
+      const userId = sessionStorage.getItem("secret_key")
+        ? sessionStorage.getItem("secret_key")
+        : localStorage.getItem("secret_key");
+      const res = await databases.getDocument(VITE_DATABASE_ID, VITE_USERS_TABLE_ID, userId);
+      setUser(res);
+    })();
+  }, [])
   return (
     <ButtonWrapper>
       {!!!secretKey ? (
@@ -145,13 +156,12 @@ export default function CustomButtons() {
             onClick={(e) => setUserOptionsOpen(e.currentTarget)}
             onMouseEnter={(e) => {
               setUserOptionsOpen(e.currentTarget);
-              // return;
             }}
             onMouseLeave={() => setUserOptionsOpen(false)}
             sx={{ zIndex: theme.zIndex.modal + 1 }}
             endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           >
-            Cherit
+            {user?.name}
           </Buttons>
           <StyledMenu
             anchorEl={loggedInButtonRef.current}

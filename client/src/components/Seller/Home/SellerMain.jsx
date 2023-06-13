@@ -9,57 +9,51 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { productOrderStatusChange, sellerLastOrderProductsList } from "../../../redux/actions/productsAction";
-import { DataContext } from "../../utilities/ContextStore";
-import {  products } from "./data";
-
+import { listDefaultProducts, productOrderStatusChange, sellerLastOrderProductsList } from "../../../redux/actions/productsAction"
 export default function SellerMain() {
   const RowItems = styled(Typography)({
     marginBottom: 2,
     marginTop: 8,
   });
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(listDefaultProducts()).then(() => {
       dispatch(sellerLastOrderProductsList());
     });
   }, []);
-  const { sellerLastOrderProducts } = useSelector((state)=>state.products);
+  const { sellerLastOrderProducts } = useSelector((state) => state.products);
   const [orderStatus, setOrderStatus] = useState();
 
   const handleOrderStatusChange = (order_id) => (e) => {
     dispatch(productOrderStatusChange(e.target.value, order_id));
     setOrderStatus(e.target.value);
   };
-
-
- const data=[{
-    orders:sellerLastOrderProducts.length,
-    name:"Total orders",
-    color:"#03a9f4"
-},
-{
-    orders:400,
-    name:"Add to bag",
-    color:"#8bc34a"
-},
-{
-    orders:200,
-    name:"Orders",
-    color:"#e84e40"
-},
-{
-    orders:"20,000/-",
-    name:"Total Income",
-    color:"#e84e40"
-}
-]
-console.log(sellerLastOrderProducts,"prouie")
+  const total_income = () => {
+    const incomes = sellerLastOrderProducts.map((item) => item.product_price);
+    let total = 0;
+    incomes.forEach(el => {
+      total += Number(el);
+    });
+    return total.toString();
+  };
+  console.log(sellerLastOrderProducts);
+  const data = [{
+    orders: sellerLastOrderProducts.length,
+    name: "Total orders",
+    color: "#03a9f4",
+  },
+  {
+    orders: total_income(),
+    name: "Total Income",
+    color: "#e84e40",
+  },
+  ]
+  console.log(sellerLastOrderProducts, "prouie")
   return (
     <Box sx={{ mt: 5 }}>
       <Box>
@@ -191,10 +185,10 @@ console.log(sellerLastOrderProducts,"prouie")
               </RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>{product.product_name? product.product_name : "-"}</RowItems>
+              <RowItems>{product.product_name ? product.product_name : "-"}</RowItems>
             </Grid>
             <Grid item xs={1}>
-              <RowItems>{product.product_price? product.product_price : "-"}</RowItems>
+              <RowItems>{product.product_price ? product.product_price : "-"}</RowItems>
             </Grid>
             <Grid item xs={1}>
               <RowItems>{product.product_count ? product.product_count : "-"}</RowItems>

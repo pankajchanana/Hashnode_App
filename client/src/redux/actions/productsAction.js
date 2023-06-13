@@ -371,6 +371,7 @@ export const checkIfUserHasAddress = () => (dispatch) => {
   }
 };
 
+// Change the order status in the seller dashboard
 export const productOrderStatusChange = (orderStatus, orderId) => {
   const token = sessionStorage.getItem("secret_key")
     ? sessionStorage.getItem("secret_key")

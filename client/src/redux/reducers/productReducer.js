@@ -107,7 +107,6 @@ export const productReducer = (state = initialState, action) => {
       return { ...state, searchedProduct: action.payload };
     case ActionTypes.USER_ADDRESS_STATUS:
       return { ...state, userAddress: action.payload };
-
     case ActionTypes.USER_RECOMMENDED_PRODUCTS:
       let recommendedProduct = eval(action.payload);
       let newRecommendedProducts = [];
@@ -121,7 +120,7 @@ export const productReducer = (state = initialState, action) => {
         });
       });
       return { ...state, recommendedProducts: newRecommendedProducts };
-
+  
     default:
       return state;
   }
