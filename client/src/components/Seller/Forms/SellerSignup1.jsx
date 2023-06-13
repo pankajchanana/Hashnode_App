@@ -35,15 +35,11 @@ export default function SellerSignup1() {
       .then((res) => {
         const users = res.documents;
         const user = users.filter((q) => q?.email === email);
-        console.log(user, res.documents);
         if (user.length !== 0) {
-          console.log("user exits");
           setUserExistStatus(true);
         } else {
-          console.log("user not exits");
           sellerSignupData.seller_signup_status = "2";
           const uid = uuidv4();
-          console.log("signup done");
      
           const promise = databases.createDocument(
             import.meta.env.VITE_DATABASE_ID,

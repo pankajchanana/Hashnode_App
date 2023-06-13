@@ -13,7 +13,6 @@ export default function SellerProducts() {
   });
   const dispatch = useDispatch();
   const sellerProducts=useSelector(state=>state.products.sellerProducts)
-  console.log(sellerProducts,"proc")
   useEffect(() => {
     dispatch(sellerProductsList());
   }, []);

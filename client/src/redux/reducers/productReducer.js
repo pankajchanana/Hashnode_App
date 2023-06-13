@@ -113,7 +113,6 @@ export const productReducer = (state = initialState, action) => {
       let recommendedProduct = eval(action.payload);
       let newRecommendedProducts = [];
       let newProducts = [...state.initialProducts];
-      console.log(newProducts, "newProducts");
       newProducts.map((q) => {
         recommendedProduct.map((item) => {
           if (item.product_id === q.product_id) {

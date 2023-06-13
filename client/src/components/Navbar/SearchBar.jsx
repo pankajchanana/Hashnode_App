@@ -30,7 +30,6 @@ const SearchBar = ({ options, onSelect }) => {
     let product = [];
     product = userSearchData.filter((p) => p.products === e.target.value);
     if (product.length != 0) {
-      console.log("Search query:", product[0]);
       const id = product[0].product_id;
       if (id) navigate("/products/" + id);
       product = [];

@@ -10,7 +10,6 @@ export default function SellerSignup3() {
 
   const handleSellerSignup3 = async (e) => {
     // e.preventDefault();
-    console.log(sellerSignupData, "sellerSignupData in sign3");
     const uid=sessionStorage.getItem('uid');
     await account
       .createEmailSession(sellerSignupData.email, sellerSignupData.password)
@@ -26,7 +25,6 @@ export default function SellerSignup3() {
     await account.createVerification("http://localhost:5173/seller-home/dashboard/").then(
       function (response) {
         setEmailSent(true);
-        console.log(response, "email sent"); // Success
         sessionStorage.setItem("token", response.userId);
         localStorage.setItem("token",response.userId);
       },

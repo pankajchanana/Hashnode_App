@@ -63,7 +63,6 @@ export default function RightWrapper({
   };
 
   const handleSignUp = async () => {
-    console.log(data);
     const id = uuid4();
     const user = databases.createDocument(
       VITE_DATABASE_ID,

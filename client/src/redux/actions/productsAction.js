@@ -47,7 +47,6 @@ export const sellerProductsList = () => (dispatch) => {
             type: ActionTypes.SET_INITIAL_SELLER_PRODUCTS,
             payload: res.documents,
           });
-          // console.log(res, "initial prodcuts");
         })
         .catch((e) => {
           console.log("initial products failed", e);

@@ -16,9 +16,7 @@ export const CheckoutForm = ({ stripe, elements }) => {
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
     if (result.error) {
-      console.log(result.error.message);
     } else {
-      console.log(result.token, "d");
       localStorage.setItem("payment_token", result.token.id);
       window.location.href = "/payment-success";
     }

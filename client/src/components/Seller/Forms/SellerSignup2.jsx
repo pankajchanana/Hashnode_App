@@ -29,7 +29,6 @@ export default function SellerSignup2() {
     promises
       .then((res) => {
         const currentUser = res?.documents.filter((q) => q.$id === uid);
-        console.log(res.documents, currentUser, uid);
         if (uid) {
           setSellerSignupData({
             ...sellerSignupData,
@@ -45,7 +44,6 @@ export default function SellerSignup2() {
   }, []);
   const handleSellerSignup2 = (e) => {
     // e.preventDefault();
-    console.log(sellerSignupData, "sellerSignupData in sign2");
     const uid=uuidv4()
     const promise = databases.updateDocument(
       VITE_DATABASE_ID,
@@ -75,7 +73,6 @@ export default function SellerSignup2() {
         promise.then((res) => {
           setSellerSignupStatus("3");
         });
-        console.log(res, "account created");
       })
       .catch((e) => {
         console.log("not created");

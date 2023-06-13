@@ -6,7 +6,8 @@ import {
 } from "../../../redux/actions/productsAction";
 import "./styles.css"; // Import the CSS file for styling
 
-export const OrderList = () => {
+
+export default function MyOrders()  {
   const dispatch = useDispatch();
   const { userMyOrders, initialProducts } = useSelector(
     (state) => state.products
@@ -16,19 +17,18 @@ export const OrderList = () => {
       dispatch(userLastOrderProductsList());
     });
   }, []);
-  // let orders=[]
-  // const filterMyOrders=()=>{
-  //   initialProducts.forEach((q)=>{
-  //     userMyOrders.forEach((p)=>{
-  //     if(p.product_id===q.product_id){
-  //       const merge={...q,...p}
-  //       orders.push(merge)
-  //     }
-  //   })
-  // })
-
-  // filterMyOrders()
-  // console.log(userMyOrders, orders, "userMyOrders");
+  let orders = [];
+  const filterMyOrders = () => {
+    initialProducts.forEach((q) => {
+      userMyOrders.forEach((p) => {
+        if (p.product_id === q.product_id) {
+          const merge = { ...q, ...p };
+          orders.push(merge);
+        }
+      });
+    });
+    return orders;
+  };
   return (
     <div className="order-list">
       <h2 className="order-list__title">Orders</h2>
@@ -36,19 +36,40 @@ export const OrderList = () => {
         <p>Loading orders...</p>
       ) : (
         <ul className="order-list__list">
-          {userMyOrders.map((order) => (
-            <li key={order.id} className="order-list__item">
-              <div className="order-list__item-id">Order ID: {order.$id}</div>
+          {filterMyOrders().map((order) => (
+            <li
+              key={order.id}
+              className="order-list__item"
+              style={{ display: "flex", justifyContent: "space-evenly" }}
+            >
               <div className="order-list__item-details">
-                <div className="order-list__item-customer">
-                  Customer Name: {order.customer_name}
+                <div className="order-list__item-id">Order ID: {order.$id}</div>
+                <div className="order-list__item-id">Order Status: {order.order_status}</div>
+                <div className="order-list__item-id">Seller Id: {order.seller_id}</div>
+              </div>
+              <div className="order-list__item-details">
+                <div
+                  style={{ fontSize: "20px" }}
+                  className="order-list__item-customer"
+                >
+                  Product Name: {order.product_name}
                 </div>
-                <div className="order-list__item-customer">
-                  Product Name: {order.customer_name}
+                <div
+                  style={{ fontSize: "20px" }}
+                  className="order-list__item-total"
+                >
+                  Total: Rs.{order.product_price}/-
                 </div>
-                <div className="order-list__item-total">
-                  Total: ${order.product_price}
-                </div>
+              </div>
+              <div>
+                <img
+                  style={{
+                    borderRadius: "30px",
+                    height: "200px",
+                    width: "200px",
+                  }}
+                  src={order.product_img}
+                />
               </div>
             </li>
           ))}
@@ -57,5 +78,3 @@ export const OrderList = () => {
     </div>
   );
 };
-
-export default OrderList;

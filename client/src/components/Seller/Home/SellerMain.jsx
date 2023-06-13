@@ -45,7 +45,6 @@ export default function SellerMain() {
     });
     return total.toString();
   };
-  console.log(sellerLastOrderProducts);
   const data = [
     {
       orders: sellerLastOrderProducts.length,
@@ -58,7 +57,6 @@ export default function SellerMain() {
       color: "#e84e40",
     },
   ];
-  console.log(sellerLastOrderProducts, "prouie");
 
   const getDateYearMonth = (time) => {
     const date = new Date(time);
@@ -70,7 +68,7 @@ export default function SellerMain() {
     <Box sx={{ mt: 5 }}>
       <Box>
         <Typography sx={{ textAlign: "center", fontSize: "30px" }}>
-          Welcome Back, Cherit!
+          Welcome Back!
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {data.map((q) => (
