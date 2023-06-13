@@ -14,8 +14,7 @@ const SearchBarWrapper = styled(Autocomplete)({
 
 const SearchBar = ({ options, onSelect }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [searchData, setSearchData] = React.useState("");
-  const { userSearchData, sellerProducts, searchedProduct } = useSelector(
+  const { userSearchData } = useSelector(
     (state) => state.products
   );
   const dispatch = useDispatch();
