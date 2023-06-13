@@ -130,7 +130,9 @@ export default function CustomButtons() {
       );
       setUser(res);
     })();
-  }, []);
+  }, [secretKey]);
+
+
   return (
     <ButtonWrapper>
       {!!!secretKey ? (
