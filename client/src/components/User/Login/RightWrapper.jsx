@@ -98,6 +98,7 @@ export default function RightWrapper({
   };
 
   const handleUserLogin = async () => {
+    setLoginErrorMsg("")
     databases
       .listDocuments(VITE_DATABASE_ID, VITE_USERS_TABLE_ID, [
         Query.equal("is_seller", false),
@@ -119,6 +120,7 @@ export default function RightWrapper({
               dispatch(listCurrentUserCartItems());
             })
             .catch((error) => {
+              setLoginErrorMsg("Entered email or password is incorrect")
               setUserLoginError(true);
               console.log(error, "email session failed");
             });
@@ -136,13 +138,7 @@ export default function RightWrapper({
         overflow: "none",
       }}
     >
-      {!signUpButton && userLoginError && (
-        <Typography
-          sx={{ textAlign: "center", fontSize: 17, mb: 2, color: "red" }}
-        >
-          Entered email or password is Incorrect
-        </Typography>
-      )}
+
 
       {signUpButton && (
         <>

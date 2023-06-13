@@ -13,6 +13,7 @@ const initialState = {
   userSearchData: [],
   searchedProduct: {},
   userAddress: {},
+  userMyOrders:[]
 };
 
 export const productReducer = (state = initialState, action) => {
@@ -34,7 +35,8 @@ export const productReducer = (state = initialState, action) => {
       products.forEach((p) => {
         lastOrderItms.forEach((q) => {
           if (p.product_id === q.product_id) {
-            const mergedItem = { ...p, ...q };
+            const timestamp = "2023-06-11T17:27:47.185+00:00";
+            const mergedItem = { ...p, ...q};
             newCartItems.push(mergedItem);
           }
         });
@@ -120,6 +122,8 @@ export const productReducer = (state = initialState, action) => {
         });
       });
       return { ...state, recommendedProducts: newRecommendedProducts };
+    case ActionTypes.SET_INITIAL_USER_LAST_ORDERS_PRODUCTS:
+      return {...state,userMyOrders:action.payload}
   
     default:
       return state;

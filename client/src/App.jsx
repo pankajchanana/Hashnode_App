@@ -19,6 +19,7 @@ import {
 import { useEffect } from "react";
 import Payment from "./components/Payment/Payment";
 import PaymentSuccess from "./components/Payment/PaymentSuccess";
+import MyOrders from "./components/User/Dashboard/MyOrders";
 
 function App() {
   const route = window.location.pathname;
@@ -53,6 +54,7 @@ function App() {
           />
           <Route path="/seller-signup" element={<SellerSignup />} />
           <Route path="/seller-home/dashboard/*" element={<Home />} />
+          <Route path="/my-orders" element={ <><Navbar/> <MyOrders /> </>} />
           <Route element={<RedirectAuth />}></Route>
           <Route element={<RequireAuth />}>
             <Route path="/payment" element={<Payment />} />

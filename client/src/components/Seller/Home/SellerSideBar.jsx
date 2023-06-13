@@ -45,7 +45,7 @@ export default function SellerSideBar() {
         margin: 0,
       }}
     >
-      <Avatar sx={{ height: "100px", width: "100px" }} src={cust1} />
+      <Avatar sx={{ height: "100px", width: "100px" }} src={"https://media.licdn.com/dms/image/C4D03AQHpNwp_7RQwVQ/profile-displayphoto-shrink_800_800/0/1646704026605?e=2147483647&v=beta&t=ew3CNSf5jcGmzIxS-NJfnLWR9wqD7mAZF0BGTfFJ-Gk"} />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Link to={`/seller-home/dashboard/${uid}`}>
           {" "}

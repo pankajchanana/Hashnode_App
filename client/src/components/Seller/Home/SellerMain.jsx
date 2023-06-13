@@ -13,7 +13,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listDefaultProducts, productOrderStatusChange, sellerLastOrderProductsList } from "../../../redux/actions/productsAction"
+import {
+  listDefaultProducts,
+  productOrderStatusChange,
+  sellerLastOrderProductsList,
+} from "../../../redux/actions/productsAction";
 export default function SellerMain() {
   const RowItems = styled(Typography)({
     marginBottom: 2,
@@ -36,24 +40,32 @@ export default function SellerMain() {
   const total_income = () => {
     const incomes = sellerLastOrderProducts.map((item) => item.product_price);
     let total = 0;
-    incomes.forEach(el => {
+    incomes.forEach((el) => {
       total += Number(el);
     });
     return total.toString();
   };
   console.log(sellerLastOrderProducts);
-  const data = [{
-    orders: sellerLastOrderProducts.length,
-    name: "Total orders",
-    color: "#03a9f4",
-  },
-  {
-    orders: total_income(),
-    name: "Total Income",
-    color: "#e84e40",
-  },
-  ]
-  console.log(sellerLastOrderProducts, "prouie")
+  const data = [
+    {
+      orders: sellerLastOrderProducts.length,
+      name: "Total orders",
+      color: "#03a9f4",
+    },
+    {
+      orders: total_income(),
+      name: "Total Income",
+      color: "#e84e40",
+    },
+  ];
+  console.log(sellerLastOrderProducts, "prouie");
+
+  const getDateYearMonth = (time) => {
+    const date = new Date(time);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    return date.getDate() + "/" + month + "/" + year;
+  };
   return (
     <Box sx={{ mt: 5 }}>
       <Box>
@@ -144,13 +156,15 @@ export default function SellerMain() {
             }}
           >
             <Grid item xs={2}>
-              <RowItems>{(product.order_id)}</RowItems>
+              <RowItems>{product.order_id.substring(0,6)}</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>Jan 8th,2023</RowItems>
+              <RowItems>{getDateYearMonth(product.$createdAt)}</RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>{product.customer_name ? product.customer_name : "-"}</RowItems>
+              <RowItems>
+                {product.customer_name ? product.customer_name : "-"}
+              </RowItems>
             </Grid>
             <Grid item xs={2}>
               <RowItems>
@@ -168,9 +182,7 @@ export default function SellerMain() {
                       value={orderStatus}
                       onChange={handleOrderStatusChange(product.order_id)}
                     >
-                      <MenuItem value={"Order Placed"}>
-                        Order Placed
-                      </MenuItem>
+                      <MenuItem value={"Order Placed"}>Order Placed</MenuItem>
                       <MenuItem value={"Ready to dispatch"}>
                         Ready to dispatch
                       </MenuItem>
@@ -185,13 +197,19 @@ export default function SellerMain() {
               </RowItems>
             </Grid>
             <Grid item xs={2}>
-              <RowItems>{product.product_name ? product.product_name : "-"}</RowItems>
+              <RowItems>
+                {product.product_name ? product.product_name : "-"}
+              </RowItems>
             </Grid>
             <Grid item xs={1}>
-              <RowItems>{product.product_price ? product.product_price : "-"}</RowItems>
+              <RowItems>
+                {product.product_price ? product.product_price : "-"}
+              </RowItems>
             </Grid>
             <Grid item xs={1}>
-              <RowItems>{product.product_count ? product.product_count : "-"}</RowItems>
+              <RowItems>
+                {product.product_count ? product.product_count : "-"}
+              </RowItems>
             </Grid>
           </Grid>
         ))}

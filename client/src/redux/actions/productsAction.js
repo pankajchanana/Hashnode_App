@@ -73,6 +73,29 @@ export const sellerLastOrderProductsList = () => async (dispatch) => {
         type: ActionTypes.SET_INITIAL_LAST_ORDERS_PRODUCTS,
         payload: res.documents,
       });
+      console.log(res, "seller last");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
+
+//user my orders
+
+export const userLastOrderProductsList = () => async (dispatch) => {
+  const uid = sessionStorage.getItem("secret_key");
+  if (uid) {
+    try {
+      const res = await databases.listDocuments(
+        VITE_DATABASE_ID,
+        VITE_ORDERS_TABLE_ID,
+        [Query.equal("user_id", uid), Query.limit(100), Query.offset(0)]
+      );
+      dispatch({
+        type: ActionTypes.SET_INITIAL_USER_LAST_ORDERS_PRODUCTS,
+        payload: res.documents,
+      });
+      console.log(res, "seller last");
     } catch (e) {
       console.log(e);
     }
@@ -387,13 +410,15 @@ export const productOrderStatusChange = (orderStatus, orderId) => {
         .then((res) => {
           const order = res.documents[0];
           databases
-            .updateDocument(VITE_DATABASE_ID, VITE_ORDERS_TABLE_ID, orderId, {order_status: orderStatus})
+            .updateDocument(VITE_DATABASE_ID, VITE_ORDERS_TABLE_ID, orderId, {
+              order_status: orderStatus,
+            })
             .then((res) => {
               console.log(res, "status change successful");
             })
             .catch((e) => {
               console.log("Status change failed", e);
-            })
+            });
         })
         .catch((e) => {
           console.log("Order status change failed", e);

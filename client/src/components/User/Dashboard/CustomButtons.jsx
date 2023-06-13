@@ -123,10 +123,14 @@ export default function CustomButtons() {
       const userId = sessionStorage.getItem("secret_key")
         ? sessionStorage.getItem("secret_key")
         : localStorage.getItem("secret_key");
-      const res = await databases.getDocument(VITE_DATABASE_ID, VITE_USERS_TABLE_ID, userId);
+      const res = await databases.getDocument(
+        VITE_DATABASE_ID,
+        VITE_USERS_TABLE_ID,
+        userId
+      );
       setUser(res);
     })();
-  }, [])
+  }, []);
   return (
     <ButtonWrapper>
       {!!!secretKey ? (
@@ -177,21 +181,8 @@ export default function CustomButtons() {
             onClose={() => setUserOptionsOpen(false)}
           >
             <MenuItem onClick={() => setUserOptionsOpen(false)} disableRipple>
-              <EditIcon />
-              Notification Preferences
-            </MenuItem>
-            <MenuItem onClick={() => setUserOptionsOpen(false)} disableRipple>
-              <FileCopyIcon />
-              24x7 Customer Care
-            </MenuItem>
-            <Divider sx={{ my: 0.5 }} />
-            <MenuItem onClick={() => setUserOptionsOpen(false)} disableRipple>
-              <ArchiveIcon />
-              Advertise
-            </MenuItem>
-            <MenuItem onClick={() => setUserOptionsOpen(false)} disableRipple>
               <MoreHorizIcon />
-              Download App
+              <Link to="/my-orders">My orders</Link>
             </MenuItem>
             <MenuItem onClick={handleUserLogout} disableRipple>
               <MoreHorizIcon />
@@ -269,58 +260,6 @@ export default function CustomButtons() {
           Become a Seller
         </Buttons>
       </Link>
-      <Buttons
-        fontWeight={"800"}
-        width={"130px"}
-        Color={"white"}
-        variant="outlined"
-        ref={moreButtonRef}
-        onClick={(e) => setOpen(e.currentTarget)}
-        onMouseEnter={(e) => {
-          setOpen(e.currentTarget);
-          // return;
-        }}
-        onMouseLeave={() => setOpen(false)}
-        sx={{ zIndex: theme.zIndex.modal + 1 }}
-        endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-      >
-        More
-      </Buttons>
-      <StyledMenu
-        id="demo-customized-menu"
-        MenuListProps={{
-          "aria-labelledby": "demo-customized-button",
-        }}
-        anchorEl={moreButtonRef.current}
-        PaperProps={{
-          onMouseEnter: (e) => {
-            setOpen(e.currentTarget);
-          },
-          onMouseLeave: () => {
-            setOpen(false);
-          },
-        }}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <MenuItem onClick={() => setOpen(false)} disableRipple>
-          <EditIcon />
-          Notification Preferences
-        </MenuItem>
-        <MenuItem onClick={() => setOpen(false)} disableRipple>
-          <FileCopyIcon />
-          24x7 Customer Care
-        </MenuItem>
-        <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={() => setOpen(false)} disableRipple>
-          <ArchiveIcon />
-          Advertise
-        </MenuItem>
-        <MenuItem onClick={() => setOpen(false)} disableRipple>
-          <MoreHorizIcon />
-          Download App
-        </MenuItem>
-      </StyledMenu>
 
       <Buttons
         fontWeight={"800"}
