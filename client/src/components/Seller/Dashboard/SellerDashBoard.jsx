@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Navbar from "../../Navbar/Navbar";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import banner from "../../../../assets/banner_seller.png";
+// import banner from "../../../../assets/banner_seller.png";
 import styled from "@emotion/styled";
 import CustomerReview from "./CustomerReview";
 import { useForm } from "react-hook-form";
@@ -85,7 +85,7 @@ export default function SellerDashBoard() {
             </Link>
           </Grid>
           <Grid item xs={7}>
-            <SellerImg src={banner} />
+            <SellerImg src={""} />
           </Grid>
         </Grid>
       </Box>

@@ -1,6 +1,6 @@
 import { Avatar, Box, styled, Button } from "@mui/material";
 import React from "react";
-import cust1 from "../../../../assets/cust1.png";
+// import cust1 from "../../../../assets/cust1.png";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
