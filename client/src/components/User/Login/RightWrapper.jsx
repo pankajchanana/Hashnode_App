@@ -47,6 +47,12 @@ export default function RightWrapper({
   const navigate = useNavigate();
 
   const handleSignUpButton = () => {
+    setLoginErrorMsg("");
+    setData({
+      ...data,
+      email: "",
+      password: "",
+    });
     setLoginText({
       title: "Looks like you're new here!",
       subTitle: "Sign up with your mobile number to get started",
@@ -97,7 +103,7 @@ export default function RightWrapper({
   };
 
   const handleUserLogin = async () => {
-    setLoginErrorMsg("")
+    setLoginErrorMsg("");
     databases
       .listDocuments(VITE_DATABASE_ID, VITE_USERS_TABLE_ID, [
         Query.equal("is_seller", false),
@@ -105,7 +111,7 @@ export default function RightWrapper({
       .then(async (res) => {
         const users = res.documents;
         const userExist = users.filter((q) => q.email === data.email);
-        if (userExist.length!==0) {
+        if (userExist.length !== 0) {
           await account
             .createEmailSession(data.email, data.password)
             .then((response) => {
@@ -119,7 +125,7 @@ export default function RightWrapper({
               dispatch(listCurrentUserCartItems());
             })
             .catch((error) => {
-              setLoginErrorMsg("Entered email or password is incorrect")
+              setLoginErrorMsg("Entered email or password is incorrect");
               setUserLoginError(true);
               console.log(error, "email session failed");
             });
@@ -137,8 +143,6 @@ export default function RightWrapper({
         overflow: "none",
       }}
     >
-
-
       {signUpButton && (
         <>
           <TextField
@@ -223,6 +227,7 @@ export default function RightWrapper({
             message: "Email is invalid",
           },
         })}
+        value={data.email}
         error={Boolean(errors.email)}
         helperText={errors.email?.message}
         onChange={(e) => setData({ ...data, [e.target.name]: e.target.value })}
@@ -235,6 +240,7 @@ export default function RightWrapper({
         label={"Enter your Password"}
         name="password"
         type="password"
+        value={data.password}
         {...register("password", {
           required: {
             value: true,

@@ -85,7 +85,7 @@ export default function SellerDashBoard() {
             </Link>
           </Grid>
           <Grid item xs={7}>
-            <SellerImg src={""} />
+            <SellerImg src={"https://static-assets-web.flixcart.com/fk-sp-static/images/banner_mobile_v2.4.png"} />
           </Grid>
         </Grid>
       </Box>
