@@ -1,5 +1,5 @@
 import { Box, Button, Grid, styled, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { databases } from "../../../../../services/appwriteConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
@@ -29,6 +29,7 @@ function DetailProduct() {
   const { setCartItemsData, cartItemsData, itemCount, setLoginModalOpen } =
     React.useContext(DataContext);
   const dispatch = useDispatch();
+  const [recommendedProductsList, setRecommendedProductsList] = useState();
 
   const { itemPresentInCart, initialProducts, recommendedProducts } =
     useSelector((state) => state.products);
@@ -38,6 +39,10 @@ function DetailProduct() {
     dispatch(listDefaultProducts());
     dispatch(fetchRecommendedProducts(product?.product_name));
   }, []);
+
+  useEffect(() => {
+    setRecommendedProductsList(recommendedProducts);
+  }, [recommendedProducts]);
   const ImageGrid = styled(Box)`
     margin: 30px 0 0 40px;
     display: flex;
@@ -243,7 +248,16 @@ function DetailProduct() {
         </ImageGrid>
       </Box>
       <Box>
-        <Typography sx={{fontSize:"20px",marginTop:"50px",padding:2,fontWeight:600}}>People also Bought</Typography>
+        <Typography
+          sx={{
+            fontSize: "20px",
+            marginTop: "50px",
+            padding: 2,
+            fontWeight: 600,
+          }}
+        >
+          People also Bought
+        </Typography>
         <Carousel
           responsive={responsive}
           dotListClass="custom-dot-list-style"
@@ -254,7 +268,7 @@ function DetailProduct() {
           swipeable={false}
           draggable={false}
         >
-          {recommendedProducts.map((item, index) => {
+          {recommendedProductsList!==undefined && recommendedProductsList.map((item, index) => {
             return <ProductList item={item} />;
           })}
         </Carousel>
