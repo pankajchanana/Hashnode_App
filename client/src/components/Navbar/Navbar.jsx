@@ -31,7 +31,7 @@ export default function NavBar() {
           >
             <Link style={{ textDecoration: "none" }} to="/">
               <Typography sx={{ fontSize: 16, color: "white" }}>
-                Online Market
+                Hashoppe
               </Typography>
             </Link>
             <SearchBar />
