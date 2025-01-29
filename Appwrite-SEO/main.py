@@ -68,9 +68,9 @@ def query_order_status_from_database(order_id):
   
     client = Client()
     client.set_endpoint('https://cloud.appwrite.io/v1')  # Replace with your Appwrite endpoint
-    client.set_project('646f96814ce0bd792d15')  # Replace with your Appwrite project ID
+    client.set_project('6799cfa2002acf1ad11a')  # Replace with your Appwrite project ID
     client.set_key('6a759c9a8af2d7375898ab12267f78dd571da99ba41508369770c1617dde56198ad379536f31ab7691dc86d1aef7195e1a2469edbb0faf41a2d720bcbb397643bc783aee078310d2d581da685e9f61e784b7694bdb090b361033c5d53fc0e11249c58db5e2d0b138bc0b3e25ef9485d9dfd4102909f0ec09d84f2b400bfa6aa5')  
-    database_id="646f96a60d5767f59620"
+    database_id="6799d028002bbed3a90f"
     database = Databases(client)
     # Fetch order details from the database
     collection_id = '648061a485127fc18474'  # Replace with your collection ID
